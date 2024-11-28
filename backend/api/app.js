@@ -2,13 +2,14 @@
 const express = require('express')
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
-const Service = require('./service');
+const Service = require('./routes/service');
 // random Base64 key
 const JWT_SECRET = 'Tpv/yCLn0kdoE4VRTa8VmtGQGbdGQ/tFRtjlUDE7VmRhUv6cWsTIbkoXLZaYBu/y'
 const port = 3036
 const address = '10.147.19.129'
 startServer()
 const app = express()
+app.use(express.json())
 
 const createResponse = (res, data, code = 200, message = "success") => {
   const response = {
@@ -39,7 +40,7 @@ const JWToken = (req, res, next) => {
   });
 };
 
-const signToken = (name, role) => {
+const signToken = (username, role) => {
   const payload = {
     username: username,
     role: role,
@@ -69,30 +70,43 @@ app.get('/user/list', async (req, res) => {
 })
 
 
-app.post('/login', (req, res) => {
+app.post('/login', async (req, res) => {
   // call Service function here
-  let name = req.username;
-  let role = req.role;
-  const token = signToken(name, role)
-  createResponse(data)
+  // console.log('Received: ', req.body)
+  let name = req.body.username;
+  let password = req.body.password;
+  let { status, role } = await Service.handleLogin(name, password);
+  console.log('status', status);
+  if(status == 'success') {
+    let token = signToken(name, role);
+    const data = {
+      token:'Bearer '+token,
+      role: role
+    };
+    createResponse(res, data);
+  }
+  else {
+    if (status == 'user_not_found')
+      createResponse(res, null, 404001, status);
+    else if (status == 'password_error')
+      createResponse(res, null, 400001, status);
+    else {
+      createResponse(res, null, 500000, 'Server error');
+    }
+  }
 })
 
 app.post('/register', (req, res) => {
   // call Service function here
-  createResponse(data)
+
+  createResponse(res, data)
 })
-
-
-
-
 
 async function startServer() {
   try {
     await Service.initDB();
-    // alow local test
-    app.use(cors({
-      origin: 'http://localhost:3000'
-    }));
+
+    app.use(cors());
 
     app.listen(port, address, () => {
       console.log(`Backend is listening on ${port}`)
@@ -102,5 +116,7 @@ async function startServer() {
     console.error(error);
   }
 }
+
+module.exports = app;
 
 

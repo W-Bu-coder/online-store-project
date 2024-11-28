@@ -2,12 +2,12 @@ const mysql = require('mysql2/promise')
 
 class Database {
   constructor() {
-    // Á¬½Ó³ØÅäÖÃ
     this.poolConfig = {
-      host: 'localhost',
-      user: 'root',
-      password: '123456',
-      database: 'ECE9065',
+      host: 'sql5.freesqldatabase.com',
+      user: 'sql5748294',
+      password: 'VLaAadHl28',
+      database: 'sql5748294',
+      port: 3306,
       waitForConnections: true
     };
 
@@ -25,7 +25,7 @@ class Database {
     }
   }
 
-  async queryUserInfo() {
+  async queryUserList() {
     try {
       const [rows] = await this.pool.execute('SELECT * FROM user_info');
       const formattedData = rows.map(user => ({
@@ -48,6 +48,23 @@ class Database {
       };
     }
   }
+
+
+
+  async queryUserInfo(username) {
+    try {
+      const sqlStr = 'SELECT * FROM user_info WHERE name = ?'
+      const row = await this.pool.execute(sqlStr, [username]);
+      return row;
+    } catch (error) {
+      console.error(error);
+      return {
+        success: false,
+        error: error.message
+      };
+    }
+  }
+
 
   async close() {
     try {

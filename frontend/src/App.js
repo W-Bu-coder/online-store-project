@@ -1,22 +1,23 @@
 import './App.css';
 
-const api = "http://localhost:3036"
+const api = 'http://10.147.19.129:3036'
 
-const handleClick = () => {
-  let url = api + '/hello';
+const handleClick = async () => {
+  let url = api + '/user/list';
   console.log('Sending request to:', url);
 
-  fetch(url, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-  })
-    .then(res => res.json())
-    .then(data => console.log('Response data:', data))
-    .catch(error => {
-      console.error('Fetch error:', error);
+  try {
+    const res = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
     });
+    const data = await res.json();
+    console.log('Response data:', JSON.stringify(data));
+  } catch (error) {
+    console.error('Fetch error:', error);
+  }
 };
 
 function App() {
