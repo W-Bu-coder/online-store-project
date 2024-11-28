@@ -30,7 +30,7 @@ class Database {
       const [rows] = await this.pool.execute('SELECT * FROM user_info');
       const formattedData = rows.map(user => ({
         userId: user.id,
-        fullName: `${user.fname} ${user.lname}`,
+        fullName: user.name,
         email: user.email,
         address: user.address,
         city: user.city,
@@ -38,11 +38,8 @@ class Database {
         postcode: user.postcode,
         role: user.role
       }));
-      console.log(JSON.stringify(formattedData));
-      return {
-        success: true,
-        data: formattedData
-      };
+      // console.log(JSON.stringify(formattedData));
+      return formattedData;
     } catch (error) {
       console.error(error);
       return {

@@ -5,10 +5,10 @@ class Service {
     await db.init()
   }
 
-  static async getUsers() {
+  static async getUsersInfo() {
     const users = await db.queryUserInfo();
-    // console.log('getUsers:' + users)
-    return users
+    // console.log('getUsers:' + users);
+    return users;
   }
 
   // add more methods here
