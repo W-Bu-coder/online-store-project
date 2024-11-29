@@ -77,10 +77,10 @@ app.post('/login', async (req, res) => {
   let password = req.body.password;
   let { status, role } = await Service.handleLogin(name, password);
   console.log('status', status);
-  if(status == 'success') {
+  if (status == 'success') {
     let token = signToken(name, role);
     const data = {
-      token:'Bearer '+token,
+      token: 'Bearer ' + token,
       role: role
     };
     createResponse(res, data);
@@ -96,10 +96,18 @@ app.post('/login', async (req, res) => {
   }
 })
 
-app.post('/register', (req, res) => {
-  // call Service function here
+app.post('/register', async (req, res) => {
+  try {
+    const userInfo = req.body
+    const result = await Service.handleRegister(userInfo);
+    console.log('result', result);
 
-  createResponse(res, data)
+    createResponse(res, null, result.code, result.status);
+    
+  } catch (error) {
+    console.error('Error in register controller:', error.message);
+    createResponse(res, null, 500011, 'server_error');
+  }
 })
 
 async function startServer() {

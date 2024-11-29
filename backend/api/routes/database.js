@@ -49,8 +49,6 @@ class Database {
     }
   }
 
-
-
   async queryUserInfo(username) {
     try {
       const sqlStr = 'SELECT * FROM user_info WHERE name = ?'
@@ -64,6 +62,42 @@ class Database {
       };
     }
   }
+
+  async insertUserInfo(userInfo) {
+    try {
+        const sqlInsert = `
+            INSERT INTO user_info (name, password, email, address, postcode, role, city, province) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        `;
+        const params = [
+            userInfo.username,
+            userInfo.password,
+            userInfo.email,
+            userInfo.address,
+            userInfo.postcode,
+            0,
+            userInfo.city,
+            userInfo.province,
+        ];
+  
+        const result = await this.pool.execute(sqlInsert, params);
+        return result;
+    } catch (error) {
+        console.error('Failed to insert user:', error.message);
+        throw new Error(error.message);
+    }
+  }
+  
+  // async getLastInsertedId() {
+  //   try {
+  //       const sql = 'SELECT LAST_INSERT_ID() AS userId';
+  //       const result = await this.pool.execute(sql);
+  //       return result[0]?.userId || null;
+  //   } catch (error) {
+  //       console.error('Failed to fetch last inserted ID:', error.message);
+  //       throw new Error(error.message);
+  //   }
+  // }
 
 
   async close() {
