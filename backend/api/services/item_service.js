@@ -60,6 +60,55 @@ class ItemService {
     return data
   }
 
+  static async deleteItem(id) {
+    // let id = data.itemId
+    let status = await db.queryItem(id)
+    if (status.length < 1) {
+      return {
+        code: 404081,
+        message: 'Item does not exist'
+      }
+    }
+    try {
+      await db.deleteItem(id)
+      return {
+        code: 200,
+        message: 'success'
+      }
+    } catch (error) {
+      console.log(error)
+      return {
+        code: 401081,
+        message: 'Database error'
+      }
+    }
+  }
+
+  static async updateItemStock(data) {
+    let id = data.itemId
+    let qty = data.qty
+    let status = await db.queryItem(id)
+    if (db.isEmpty(status)) {
+      return {
+        code: 404071,
+        message: 'Item does not exist'
+      }
+    }
+    try {
+      await db.updateStock(id, qty, 'mod')
+      return {
+        code: 200,
+        message: 'success'
+      }
+    } catch (error) {
+      console.log(error)
+      return {
+        code: 401071,
+        message: 'Database error'
+      }
+    }
+  }
+
 }
 
 module.exports = ItemService;

@@ -114,7 +114,7 @@ class UserService {
     // username can not repeat
     const [rows] = await db.queryUserInfo(userInfo.username);
     if (rows && rows.length > 0) {
-      return { status: 'Name already exist', code: 400011 };
+      return { status: 'Name already exists', code: 400011 };
     }
 
     const emailRegex = /\S+@\S+\.\S+/;
@@ -133,7 +133,7 @@ class UserService {
       return { status: 'success', code: 200 };
     } catch (error) {
       console.error('Error in handleRegister:', error.message);
-      return { status: 'Data not found', code: 404 };
+      return { status: 'Data not found', code: 404011 };
     }
   }
 

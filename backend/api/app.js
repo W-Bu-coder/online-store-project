@@ -95,11 +95,7 @@ app.post('/api/register', hashPwd, async (req, res) => {
 
 // add JWT authentication
 // app.use(checkToken)
-// app.post('/api/logout', async (req, res) => {
-//   let name = req.query.username
-//   let { status, code } = await UserService.handleLogout(name)
-//   createResponse(res, null, code, status)
-// })
+// app.post('/api/logout', async (req, res) => {}
 // get user list
 app.get('/api/user/list', checkRole(), async (req, res) => {
   let result = await UserService.getUserList()
@@ -155,10 +151,26 @@ app.get('/api/order/list', async (req, res) => {
 })
 // detailed order
 app.get('/api/order/details', async (req, res) => {
-  let result = await OrderService.getOrderInfo(req.query.orderId)
+  let orderId = '#'+req.query.orderId
+  let result = await OrderService.getOrderInfo(orderId)
   createResponse(res, result.data, result.code, result.message)
 })
-
+//admin: manage order(delete)
+// app.delete('/api/order/info', checkRole(), async (req, res) => {
+app.delete('/api/order/info', async (req, res) => {
+  let result = await OrderService.deleteOrder(req.query.orderId)
+  createResponse(res, null, result.code, result.message)
+})
+//admin: manage item(delete)
+app.delete('/api/item/info', async (req, res) => {
+  let result = await ItemService.deleteItem(req.query.itemId)
+  createResponse(res, null, result.code, result.message)
+})
+//admin: manage item(stock)
+app.put('/api/item/stock', async (req, res) => {
+  let result = await ItemService.updateItemStock(req.query)
+  createResponse(res, null, result.code, result.message)
+})
 // init
 async function startServer() {
   try {
@@ -172,6 +184,8 @@ async function startServer() {
   }
 }
 
+// vercel
 // export default app;
+// local
 module.exports = app;
 

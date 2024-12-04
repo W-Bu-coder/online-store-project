@@ -32,6 +32,8 @@ class EmailService {
       }
     }
     console.log('email target:', target)
+    const pattern = /^.*(?=\sGMT)/;
+    const time = (orderData.time.toString()).match(pattern)[0];
     let content = `
     <style>
        table { width: 100%; border-collapse: collapse; }
@@ -40,8 +42,8 @@ class EmailService {
    </style>
     <h1>${username}, thank you for your purchase!</h1>
       <h3>Order:  ${orderData.id}</h3>
-      <h3>Payment:  ${orderData.card}</h3>
-      <h3>Time:  ${orderData.time}</h3>
+      <h3>Payment Account:  ${orderData.card}</h3>
+      <h3>Time:  ${time}</h3>
       <h3>Details: </h3>
       <table>
        <tr>
@@ -54,10 +56,10 @@ class EmailService {
        ${items.map(item => `
            <tr>
                <td>${item.name}</td>
-               <td>$${item.price}</td>
+               <td>$${Number(item.price).toFixed(2)}</td>
                <td>${item.qty}</td>
-               <td>$${item.tax}</td>
-               <td>$${item.total}</td>
+               <td>$${Number(item.tax).toFixed(2)}</td>
+               <td>$${Number(item.total).toFixed(2)}</td>
            </tr>
        `).join('')}
        <tr style="border-top: 2px solid; border-bottom: 0px; font-weight: bold;">

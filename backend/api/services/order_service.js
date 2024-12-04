@@ -5,14 +5,24 @@ const path = require('path')
 class OrderService {
   static async getOrderList(name) {
     let result = await db.queryOrderList(name)
+    result = await Promise.all(result.map(async item => {
+      let list = JSON.parse(item.items)
+      let totalPrice = 0.0
+        list.forEach((i) => {
+          totalPrice += Number(i.total)
+        })
+      item.totalPrice = totalPrice
+      return item
+    }))
     return result
   }
+
   static async getOrderInfo(id) {
     let info = await db.queryOrderInfo(id)
-    console.log(info)
-    if (info === null) {
+    // console.log('orderinfo',info)
+    if (db.isEmpty(info)) {
       return {
-        data: null, code: 404051, message: 'Order not exist!'
+        data: null, code: 404051, message: 'Order does not exist'
       }
     }
     let items = JSON.parse(info.items)
@@ -40,6 +50,25 @@ class OrderService {
     }))
     return {
       data: result, code: 200, message: 'success'
+    }
+  }
+
+  static async deleteOrder(id) {
+    let status = await db.queryOrderInfo(id)
+    if (db.isEmpty(status)) {
+      return {
+        code: 404061,
+        message: 'Order does not exist'
+      }
+    }
+    try {
+      await db.deleteOrder(id)
+      return {
+        code: 200,
+        message: 'success'
+      }
+    } catch (error) {
+      console.log(error)
     }
   }
 }

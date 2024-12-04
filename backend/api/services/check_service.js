@@ -51,7 +51,7 @@ class CheckService {
   }
 
   static async checkCard(card) {
-    let cardNumber = card.replace(/[\s-]/g, '')
+    let cardNumber = card.toString().replace(/[\s-]/g, '')
     if (/^\d{13,19}$/.test(cardNumber))
       return true
     return false

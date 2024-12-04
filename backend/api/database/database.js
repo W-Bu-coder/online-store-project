@@ -53,6 +53,8 @@ class Database {
       const sql = 'SELECT id FROM user_info WHERE name = ?'
       const [row] = await this.pool.execute(sql, [username])
       // console.log('query ID:',username, row)
+      if (this.isEmpty(row))
+        throw error.message(username, 'user does not exist')
       return row[0].id
     } catch (error) {
       throw error
@@ -148,11 +150,13 @@ class Database {
   async queryItem(id) {
     const sql = 'SELECT * FROM item_info WHERE id = ?';
     try {
-      const [result] = await this.pool.execute(sql, [id]);
-      return result[0];
+      const [result] = await this.pool.execute(sql, [id])
+      if (result.length < 1)
+        return result
+      return result[0]
     } catch (error) {
-      console.error(error);
-      throw error;
+      console.error(error)
+      throw error
     }
   }
   async queryCartList(id) {
@@ -214,6 +218,16 @@ class Database {
     }))
   )
 
+  insertCartlist = async (id, items) => {
+    const sql = 'INSERT INTO cart_list (id, items) VALUES (?, ?)';
+    try {
+      await this.pool.execute(sql, [id, items]);
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+
   updateCartList = async (name, data) => {
     let id = await this.queryUserId(name)
     let suf = (await this.queryStockStatus(data)).filter(item => !!item)
@@ -222,7 +236,7 @@ class Database {
       return suf
     }
     let oldCart = await this.queryCartList(id)
-    if (oldCart !== undefined || oldCart !== null) {
+    if (! this.isEmpty(oldCart)) {
       try {
         await this.deleteCartList(id)
       } catch (error) {
@@ -230,29 +244,8 @@ class Database {
       }
     }
     const items = JSON.stringify(data)
-    const sql = 'INSERT INTO cart_list (id, items) VALUES (?, ?)';
-    try {
-      await this.pool.execute(sql, [id, items]);
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
+    await this.insertCartlist(id, items)
     return null
-  }
-
-  async deleteCartList(name) {
-    let user_id = await this.queryUserId(name)
-    const sql = 'DELETE FROM cart_list WHERE id = ?'
-    try {
-      let [res] = await this.pool.execute(sql, [user_id])
-      // console.log(res[0])
-      if (res.length < 1)
-        return res
-      return res[0]
-    } catch (error) {
-      console.error(error)
-      throw error
-    }
   }
   // get the newest order info
   async queryLastOrderInfo(user_id) {
@@ -292,6 +285,16 @@ class Database {
       return res
     } catch (error) {
       console.error(error)
+      throw error
+    }
+  }
+
+  async deleteOrder(id) {
+    const sql = 'DELETE FROM purchase_history WHERE id = ?'
+    try {
+      let [res] = await this.pool.execute(sql, [id])
+      // console.log(res)
+    } catch (error) {
       throw error
     }
   }
@@ -337,13 +340,64 @@ class Database {
     }
   }
 
+  isAllNull(arr) {
+    return Array.isArray(arr) &&
+      arr.length > 0 &&
+      arr.every(item => item === null);
+  }
+
+  casUpdateCart = async (id, items) => {
+    // console.log('cart update')
+    await this.deleteCartList(id)
+    await this.insertCartlist(id, items)
+  }
+
+  deleteItemFromCart = async (id) => {
+    console.log('delete from cart')
+    const sql = 'SELECT * FROM cart_list'
+    try {
+      let [res] = await this.pool.execute(sql)
+      // console.log(res)
+      await Promise.all(res.map(async info => {
+        let itemList = JSON.parse(info.items)
+        // console.log('oldlist',itemList)
+        let newList = await Promise.all(itemList.map(async item => {
+          if (item.id === id)
+            return null
+          return item
+        }))
+        if (this.isAllNull(newList)) {
+          await this.deleteCartList(info.id)
+        } else {
+          newList = newList.filter(item => item !== null)
+          await this.casUpdateCart(info.id, newList)
+        }
+      }))
+    } catch (error) {
+      console.error(error)
+      throw error
+    }
+  }
+
+  deleteItem = async (id) => {
+    const sql = 'DELETE FROM item_info WHERE id = ?'
+    try {
+      await this.pool.execute(sql, [id])
+      await this.deleteItemFromCart(id)
+      // console.log('admin delete item:', res1, res2)
+    } catch (error) {
+      console.error(error)
+      throw error
+    }
+  }
+
   async queryEmail(id) {
     const sql = 'SELECT email FROM user_info WHERE id = ?'
     try {
       let [res] = await this.pool.execute(sql, [id])
       if (res.length < 1)
         return res
-      console.log('email:',res[0].email)
+      console.log('email:', res[0].email)
       return res[0].email
     } catch (error) {
       console.error(error)
