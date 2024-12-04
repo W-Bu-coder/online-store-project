@@ -1,130 +1,177 @@
-
+process.env.TZ = 'America/New_York';
 const express = require('express')
-const cors = require('cors');
-const jwt = require('jsonwebtoken');
-const Service = require('./routes/service');
-// random Base64 key
-const JWT_SECRET = 'Tpv/yCLn0kdoE4VRTa8VmtGQGbdGQ/tFRtjlUDE7VmRhUv6cWsTIbkoXLZaYBu/y'
+const cors = require('cors')
+const bcrypt = require('bcrypt');
+
+const UserService = require('./services/user_service')
+const ItemService = require('./services/item_service')
+const CartService = require('./services/cart_service')
+const CheckService = require('./services/check_service')
+const OrderService = require('./services/order_service')
+const { signToken, checkToken, checkRole } = require('./services/jwt_auth')
+
 const port = 3036
-const address = '10.147.19.129'
+const address = '10.147.19.129' //zeroTier address of backend
 startServer()
 const app = express()
 app.use(express.json())
+const helmet = require('helmet');
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+    crossOriginEmbedderPolicy: false,
+    xContentTypeOptions: true
+  })
+);
 
+// generate response
 const createResponse = (res, data, code = 200, message = "success") => {
+  console.log(message)
   const response = {
     code,
     message,
     data: data || null
-  };
-  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
-  res.header('Access-Control-Allow-Credentials', 'true');
+  }
+  res.header('Access-Control-Allow-Origin', 'http://localhost:3000')
+  res.header('Access-Control-Allow-Credentials', 'true')
   // console.log(JSON.stringify(response))
-  res.json(response);
+  res.json(response)
 }
 
-const JWToken = (req, res, next) => {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1]; // Bearer TOKEN
-
-  if (!token) {
-    return res.status(403).json({ message: 'No token or token invalid' });
-  }
-
-  jwt.verify(token, JWT_SECRET, (err, user) => {
-    if (err) {
-      return res.status(403).json({ message: 'No token or token invalid' });
+// salt and hash
+const hashPwd = async (req, res, next) => {
+  try {
+    if (!req.body.password) {
+      return next();
     }
-    req.user = user;
+    const SALT_ROUNDS = 10;
+    const hashedPwd = await bcrypt.hash(req.body.password, SALT_ROUNDS);
+    req.body.password = hashedPwd;
     next();
-  });
+  } catch (error) {
+    next(error);
+  }
 };
 
-const signToken = (username, role) => {
-  const payload = {
-    username: username,
-    role: role,
-  };
-
-  const token = jwt.sign(
-    payload,
-    JWT_SECRET,
-    {
-      expiresIn: '24h'
-    }
-  );
-  return token
-}
-// app.get('/hello', (req, res) => {
-//   console.log('Received: ')
-//   console.log(req)
+// app.get('/api/hello', (req, res) => {
 //   let data = {
 //     content: 'Hello, World!'
 //   }
-//   res.send(createResponse(data))
+//   createResponse(res, data)
 // })
 
-app.get('/user/list', async (req, res) => {
-  let data = await Service.getUsersInfo()
-  createResponse(res, data)
-})
+const dev = async (req, res, next) => {
+  console.log(req.pathname)
+  console.log(req.body)
+  console.log(req.query)
+  next()
+}
 
+app.use(dev)
 
-app.post('/login', async (req, res) => {
-  // call Service function here
-  // console.log('Received: ', req.body)
-  let name = req.body.username;
-  let password = req.body.password;
-  let { status, role } = await Service.handleLogin(name, password);
-  console.log('status', status);
+// app.post('/api/login', hashPwd, async (req, res) => {
+app.post('/api/login', async (req, res) => {
+  let { status, code, role } = await UserService.handleLogin(req.body.username, req.body.password)
   if (status == 'success') {
-    let token = signToken(name, role);
+    let token = signToken(req.body.username, role)
     const data = {
       token: 'Bearer ' + token,
       role: role
-    };
-    createResponse(res, data);
+    }
+    createResponse(res, data)
   }
   else {
-    if (status == 'user_not_found')
-      createResponse(res, null, 404001, status);
-    else if (status == 'password_error')
-      createResponse(res, null, 400001, status);
-    else {
-      createResponse(res, null, 500000, 'Server error');
-    }
+    createResponse(res, null, code, status)
   }
 })
-
-app.post('/register', async (req, res) => {
+app.post('/api/register', hashPwd, async (req, res) => {
   try {
-    const userInfo = req.body
-    const result = await Service.handleRegister(userInfo);
-    console.log('result', result);
-
-    createResponse(res, null, result.code, result.status);
-    
+    const result = await UserService.handleRegister(req.body)
+    createResponse(res, null, result.code, result.status)
   } catch (error) {
-    console.error('Error in register controller:', error.message);
-    createResponse(res, null, 500011, 'server_error');
+    createResponse(res, null, 404, 'Data not found')
   }
 })
 
+// add JWT authentication
+// app.use(checkToken)
+// app.post('/api/logout', async (req, res) => {
+//   let name = req.query.username
+//   let { status, code } = await UserService.handleLogout(name)
+//   createResponse(res, null, code, status)
+// })
+// get user list
+app.get('/api/user/list', checkRole(), async (req, res) => {
+  let result = await UserService.getUserList()
+  createResponse(res, result.data, result.code, result.status)
+})
+// get profile
+app.get('/api/user/info', async (req, res) => {
+  let result = await UserService.getUserInfo(req.query.username)
+  createResponse(res, result)
+})
+// update profile, frontend checked
+app.post('/api/user/info', async (req, res) => {
+  let { status, code } = await UserService.updateUserInfo(req.body)
+  createResponse(res, null, code, status)
+})
+// get item list
+app.get('/api/item/list', async (req, res) => {
+  let data = await ItemService.getItemList(req.query)
+  createResponse(res, data)
+})
+// get item detail
+app.get('/api/item/details', async (req, res) => {
+  let result = await ItemService.getItemDetails(req.query.itemId)
+  createResponse(res, result)
+})
+// update cart list
+app.put('/api/cart/list', async (req, res) => {
+  let result = await CartService.updateCartList(req.body)
+  if (result === null)
+    createResponse(res, result)
+  else
+    createResponse(res, result, 400031, 'Out of stock!')
+})
+// get existed cart list
+app.get('/api/cart/list', async (req, res) => {
+  let result = await CartService.getCartList(req.query.username)
+  createResponse(res, result)
+})
+// checkout validation
+app.post('/api/cart/validation', async (req, res) => {
+  let result = await CartService.valCartList(req.body)
+  createResponse(res, result.data, result.code, result.message)
+})
+// complete checkout and send email
+app.post('/api/checkout', async (req, res) => {
+  let result = await CheckService.handleCheckout(req.body)
+  createResponse(res, result)
+})
+// user check purchase history
+app.get('/api/order/list', async (req, res) => {
+  let result = await OrderService.getOrderList(req.query.username)
+  createResponse(res, result)
+})
+// detailed order
+app.get('/api/order/details', async (req, res) => {
+  let result = await OrderService.getOrderInfo(req.query.orderId)
+  createResponse(res, result.data, result.code, result.message)
+})
+
+// init
 async function startServer() {
   try {
-    await Service.initDB();
-
+    await UserService.initDB();
     app.use(cors());
-
     app.listen(port, address, () => {
       console.log(`Backend is listening on ${port}`)
     })
-
   } catch (error) {
     console.error(error);
   }
 }
 
+// export default app;
 module.exports = app;
-
 
