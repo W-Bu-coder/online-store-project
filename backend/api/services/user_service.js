@@ -86,7 +86,10 @@ class UserService {
         code: 404001,
         role: -1
       }
+    console.log(password)
+    console.log(result.password)
     const compareResult = await bcrypt.compare(password, result.password);
+    console.log(compareResult)
     // const compareResult = (password === result.password)
     if (compareResult) {
       let role = result.role;
@@ -104,14 +107,11 @@ class UserService {
       };
   }
 
-  static async handleLogout(username) {
-
-  }
-
   static async handleRegister(userInfo) {
+    // console.log('register:',userInfo)
     // username can not repeat
-    const [rows] = await db.queryUserInfo(userInfo.username);
-    if (rows && rows.length > 0) {
+    const rows = await db.queryUserInfo(userInfo.username);
+    if (rows !== null) {
       return { status: 'Name already exists', code: 400011 };
     }
 

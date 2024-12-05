@@ -5,8 +5,20 @@ const path = require('path')
 class CartService {
   static async updateCartList(data) {
     const [user, ...cart] = data;
-    let result = await db.updateCartList(user.username, cart)
-    return result
+    try {
+      let result = await db.updateCartList(user.username, cart)
+      return {
+        data: result,
+        code: 200,
+        message: 'success'
+      }
+    } catch (error) {
+      return {
+        data: null,
+        code: 404033,
+        message: error
+      }
+    }
   }
 
   static async getCartList(username) {

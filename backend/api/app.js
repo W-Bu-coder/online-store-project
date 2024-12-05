@@ -93,7 +93,7 @@ app.post('/api/register', hashPwd, async (req, res) => {
 })
 
 // add JWT authentication
-app.use(checkToken)
+// app.use(checkToken)
 // app.post('/api/logout', async (req, res) => {}
 // get profile
 app.get('/api/user/info', async (req, res) => {

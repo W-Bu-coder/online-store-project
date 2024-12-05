@@ -3,11 +3,11 @@ const mysql = require('mysql2/promise')
 class Database {
   constructor() {
     this.poolConfig = {
-      host: 'sql5.freesqldatabase.com',
-      user: 'sql5748294',
-      password: 'VLaAadHl28',
-      database: 'sql5748294',
-      port: 3306,
+      host: 'junction.proxy.rlwy.net',
+      user: 'root',
+      password: 'YTkSQJsbNvVJeIzHoDaMdfmXCHvMraxi',
+      database: 'railway',
+      port: 18462,
       waitForConnections: true
     }
 
@@ -53,12 +53,12 @@ class Database {
     try {
       const [row] = await this.pool.execute(sql, [username])
       // console.log('query ID:',username, row)
-      if (this.isEmpty(row))
-        throw error.message(username, 'user does not exist')
+      if (this.isEmpty(row) || row.length < 1)
+        return null
       console.log(row)
       return row[0].id
     } catch (error) {
-      throw error
+      throw error.message(username, 'User does not exist')
     }
   }
 
@@ -88,14 +88,14 @@ class Database {
         userInfo.city,
         userInfo.province,
       ];
-
+      console.log(sql, params)
       const result = await this.pool.execute(sql, params);
       return result;
     } catch (error) {
       throw error;
     }
   }
-
+  
   async updateUserInfo(info) {
     const field = [];
     const value = [];
@@ -242,6 +242,9 @@ class Database {
 
   updateCartList = async (name, data) => {
     let id = await this.queryUserId(name)
+    if(id == null) {
+
+    }
     let suf = (await this.queryStockStatus(data)).filter(item => !!item)
     console.log(suf)
     if (suf.length > 0) {
