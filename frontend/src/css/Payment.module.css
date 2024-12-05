@@ -95,33 +95,46 @@ table .totalsum{
     width: 58vw;
     margin-left: 15vw;
     padding: 2vw;
+    text-align: center;
+    align-items: center;
 }
 .successPic{
     height: 18vh;
     object-fit: contain;
-    margin-left: 24vw;
+    align-items: center;
 }
 .success h1{
     color: white;
     padding: 0;
     margin: 0;
-    
     text-align: center;
 }
 .success p{
     color: white;
     border-bottom: 1px solid white;
     text-align: center;
+    padding-bottom: 10px;
 }
 .checkbtn{
     background-color: white;
-    color: #185da2;
+    border: 0px;
+    border-radius: 3px;
     height: 5vh;
-    font-size: 3hv;
+    /* font-size: 3hv; */
+    font-size: 1em;
     width: 10vw;
-    margin-left: 24vw;
+    /* margin-left: 24vw; */
     margin-top: 4vh;
+    min-height: 50px;
+    /* align-items: center; */
 }
+
+@media (max-width: 1024px) {
+  .checkbtn{
+    font-size: 1em;
+}
+}
+
 .showCart{
     margin-left: 15vw;
     width: 62vw;

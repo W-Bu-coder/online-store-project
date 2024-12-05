@@ -13,11 +13,12 @@ export default function SuccesssPay(){
                 <div className={styles.success}>
                     {/* img of success */}
                     <img alt="success" src={SuccessImage} className={styles.successPic} />
+                    <br />
                     <h1>Success! </h1>
                     <p>Confirmation email has been sent!</p>
                     <button className={styles.checkbtn}>
-                        <Link to="/userprofile">
-                        Go to check order
+                        <Link to="/userprofile" >
+                          check order
                         </Link>
                         
                     </button>
