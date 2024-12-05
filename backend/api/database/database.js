@@ -148,6 +148,7 @@ class Database {
   }
 
   async queryItem(id) {
+    // console.log('queryItem:', id)
     const sql = 'SELECT * FROM item_info WHERE id = ?';
     try {
       const [result] = await this.pool.execute(sql, [id])
@@ -313,10 +314,10 @@ class Database {
         // console.log(id, 'newQty', newQty)
         if (newQty < 0)
           return null
-        let [res] = await this.pool.execute(updateSql, [newQty, id])
+        await this.pool.execute(updateSql, [newQty, id])
       } else if (op === 'mod') {
         const updateSql = 'UPDATE item_info SET stock = ? WHERE id = ?'
-        let [res] = await this.pool.execute(updateSql, [qty, id])
+        await this.pool.execute(updateSql, [qty, id])
       }
       return 'success'
     } catch (error) {

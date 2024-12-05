@@ -63,15 +63,19 @@ class ItemService {
   // delete from cart, bud not delete from item info (just set stock=0)
   static async deleteItem(id) {
     let data = {
-      itemid: id,
-      stock: 0
+      itemId: id,
+      qty: 0
     }
     try {
-      let status = await updateItemStock(data)
+      let status = await this.updateItemStock(data)
       await db.deleteItemFromCart(id)
       return status
     } catch (error) {
       console.log(error)
+      return {
+        code: 401081,
+        message: 'Database error'
+      }
     }
     // origin design: true delete operation
     // let status = await db.queryItem(id)
@@ -99,6 +103,7 @@ class ItemService {
   static async updateItemStock(data) {
     let id = data.itemId
     let qty = data.qty
+    // console.log('update stock',id,qty)
     let status = await db.queryItem(id)
     if (db.isEmpty(status)) {
       return {

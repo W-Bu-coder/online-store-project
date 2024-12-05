@@ -166,7 +166,7 @@ app.delete('/api/item/info', async (req, res) => {
   let result = await ItemService.deleteItem(req.query.itemId)
   createResponse(res, null, result.code, result.message)
 })
-//admin: manage item(stock)
+//admin: manage item(update stock)
 app.put('/api/item/stock', async (req, res) => {
   let result = await ItemService.updateItemStock(req.query)
   createResponse(res, null, result.code, result.message)
