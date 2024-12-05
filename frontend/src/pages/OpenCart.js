@@ -85,7 +85,6 @@ export default function OpenCart({ setIsCartOpen }) {
       if (!response.ok) {
         console.error(`Connect failed`);
       } else {
-
         const res = await response.json();
         console.log(res);
         if (res.code !== 200) {
@@ -100,8 +99,6 @@ export default function OpenCart({ setIsCartOpen }) {
 
         }
       }
-
-
     } catch (error) {
       console.error(error);
     }

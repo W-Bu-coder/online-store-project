@@ -123,7 +123,7 @@ export default function Review() {
 
                 <tr>
                   <td>Product Subtotal </td>
-                  <td className={styles.textright} id="subtotal">{totalPrice.toFixed(2)}</td>
+                  <td className={styles.textright} id="subtotal">${totalPrice.toFixed(2)}</td>
                 </tr>
 
                 <tr>
@@ -133,12 +133,12 @@ export default function Review() {
 
                 <tr>
                   <td>Taxes </td>
-                  <td className={styles.textright} id="tax">{tax.toFixed(2)}</td>
+                  <td className={styles.textright} id="tax">${tax.toFixed(2)}</td>
                 </tr>
 
                 <tr>
                   <td>Total </td>
-                  <td className={styles.textright} style={{ color: 'red' }} id="estimateTotal">{sum.toFixed(2)}</td>
+                  <td className={styles.textright} style={{ color: 'red' }} id="estimateTotal">${sum.toFixed(2)}</td>
                 </tr>
 
               </tbody>

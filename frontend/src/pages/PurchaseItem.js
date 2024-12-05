@@ -32,11 +32,11 @@ export default function PurchaseItem({ data }) {
     <div className={styles.PurchaseItem}>
       <div className={styles.title}>
         <span className={styles.order}>Order Code : <span className={styles.codeNumber}>{data.id}</span></span>
-        <span className={styles.orderDate}>{data.time}</span>
+        <span className={styles.orderDate}>{new Date(data.time).toLocaleString('en-US')}&nbsp;</span>
       </div>
       <div>
         <div className={styles.OrderContent}>
-          <p><strong>Total Price:  </strong><span>${data.totalPrice}</span> </p>
+          <p><strong>Total Price:  </strong><span>${data.totalPrice.toFixed(2)}</span> </p>
           <div>
             <button onClick={handleClick}>
 

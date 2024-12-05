@@ -26,10 +26,15 @@ export default function UserProfile() {
   // manage ul
   const handleMenuClick = (index) => {
     if (menuItems[index] === 'Log out') {
-      if (window.confirm('Are you sure you want to log out?')) {
-        localStorage.removeItem('username');
+      if (localStorage.getItem("keyName") == null) {
         navigate('/login', { replace: true });
+      } else {
+        if (window.confirm('Are you sure you want to log out?')) {
+          localStorage.removeItem('username');
+          navigate('/login', { replace: true });
+        }
       }
+
     }
     setActiveTab(index);
   };
