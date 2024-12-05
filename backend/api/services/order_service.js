@@ -3,14 +3,24 @@ const fs = require('fs').promises
 const path = require('path')
 
 class OrderService {
+  static async getFullOrderList() {
+    try {
+      let result = await db.queryFullOrderList()
+      return result
+    } catch (error) {
+      console.log(error)
+      return null
+    }
+  }
+
   static async getOrderList(name) {
     let result = await db.queryOrderList(name)
     result = await Promise.all(result.map(async item => {
       let list = JSON.parse(item.items)
       let totalPrice = 0.0
-        list.forEach((i) => {
-          totalPrice += Number(i.total)
-        })
+      list.forEach((i) => {
+        totalPrice += Number(i.total)
+      })
       item.totalPrice = totalPrice
       item.time = item.time.toString()
       return item

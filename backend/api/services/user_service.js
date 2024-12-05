@@ -79,17 +79,15 @@ class UserService {
   static async handleLogin(username, password) {
     const result = await db.queryUserInfo(username);
     // not exist
-    console.log(result)
+    // console.log(result)
     if (result === null)
       return {
         status: 'User not found',
         code: 404001,
         role: -1
       }
-    // const compareResult = await bcrypt.compare(password, results[0].password);
-    const compareResult = (password === result.password)
-    // console.log('login user:', username)
-    // console.log('password:', password)
+    const compareResult = await bcrypt.compare(password, result.password);
+    // const compareResult = (password === result.password)
     if (compareResult) {
       let role = result.role;
       return {

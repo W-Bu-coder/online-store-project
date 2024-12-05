@@ -59,7 +59,7 @@ const checkRole = () => {
 
     if (req.user.role !== 1) {
       return res.status(403).json({
-        message: 'You do not have permission to access this resource'
+        message: 'You have no authoration to visit this page'
       })
     }
     next()

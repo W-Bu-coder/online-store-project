@@ -49,13 +49,24 @@ class Database {
   }
 
   queryUserId = async (username) => {
+    const sql = 'SELECT id FROM user_info WHERE name = ?'
     try {
-      const sql = 'SELECT id FROM user_info WHERE name = ?'
       const [row] = await this.pool.execute(sql, [username])
       // console.log('query ID:',username, row)
       if (this.isEmpty(row))
         throw error.message(username, 'user does not exist')
+      console.log(row)
       return row[0].id
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async queryFullOrderList() {
+    const sql = 'SELECT * FROM purchase_history ORDER BY time DESC'
+    try {
+      const [row] = await this.pool.execute(sql)
+      return row
     } catch (error) {
       throw error
     }
@@ -220,7 +231,7 @@ class Database {
   )
 
   insertCartlist = async (id, items) => {
-    const sql = 'INSERT INTO cart_list (id, items) VALUES (?, ?)';
+    const sql = 'REPLACE INTO cart_list (id, items) VALUES (?, ?)';
     try {
       await this.pool.execute(sql, [id, items]);
     } catch (error) {

@@ -69,7 +69,6 @@ const hashPwd = async (req, res, next) => {
 
 // app.use(dev)
 
-// app.post('/api/login', hashPwd, async (req, res) => {
 app.post('/api/login', async (req, res) => {
   let { status, code, role } = await UserService.handleLogin(req.body.username, req.body.password)
   if (status == 'success') {
@@ -94,13 +93,8 @@ app.post('/api/register', hashPwd, async (req, res) => {
 })
 
 // add JWT authentication
-// app.use(checkToken)
+app.use(checkToken)
 // app.post('/api/logout', async (req, res) => {}
-// get user list
-app.get('/api/user/list', checkRole(), async (req, res) => {
-  let result = await UserService.getUserList()
-  createResponse(res, result.data, result.code, result.status)
-})
 // get profile
 app.get('/api/user/info', async (req, res) => {
   let result = await UserService.getUserInfo(req.query.username)
@@ -125,7 +119,7 @@ app.get('/api/item/details', async (req, res) => {
 app.put('/api/cart/list', async (req, res) => {
   let result = await CartService.updateCartList(req.body)
   if (result === null)
-    createResponse(res, result)
+    createResponse(res, null)
   else
     createResponse(res, result, 400031, 'Out of stock!')
 })
@@ -155,19 +149,30 @@ app.get('/api/order/details', async (req, res) => {
   let result = await OrderService.getOrderInfo(orderId)
   createResponse(res, result.data, result.code, result.message)
 })
+// admin: get user list
+app.get('/api/user/list', checkRole(), async (req, res) => {
+  let result = await UserService.getUserList()
+  createResponse(res, result.data, result.code, result.status)
+})
+//admin: get complete order list
+app.get('/api/order/fullist', checkRole(), async (req, res) => {
+  let result = await OrderService.getFullOrderList()
+  createResponse(res, result)
+})
 //admin: manage order(delete)
 // app.delete('/api/order/info', checkRole(), async (req, res) => {
-app.delete('/api/order/info', async (req, res) => {
-  let result = await OrderService.deleteOrder(req.query.orderId)
+app.delete('/api/order/info', checkRole(), async (req, res) => {
+  let orderId = '#'+req.query.orderId
+  let result = await OrderService.deleteOrder(orderId)
   createResponse(res, null, result.code, result.message)
 })
 //admin: manage item(delete)
-app.delete('/api/item/info', async (req, res) => {
+app.delete('/api/item/info', checkRole(), async (req, res) => {
   let result = await ItemService.deleteItem(req.query.itemId)
   createResponse(res, null, result.code, result.message)
 })
 //admin: manage item(update stock)
-app.put('/api/item/stock', async (req, res) => {
+app.put('/api/item/stock', checkRole(), async (req, res) => {
   let result = await ItemService.updateItemStock(req.query)
   createResponse(res, null, result.code, result.message)
 })
