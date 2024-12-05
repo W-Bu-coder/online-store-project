@@ -17,7 +17,7 @@ export default function SuccesssPay(){
                     <h1>Success! </h1>
                     <p>Confirmation email has been sent!</p>
                     <button className={styles.checkbtn}>
-                        <Link to="/userprofile" >
+                        <Link to="/userprofile">
                           check order
                         </Link>
                         

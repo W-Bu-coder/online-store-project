@@ -7,7 +7,7 @@ export default function CartItem({ id, initialQuantity, name, price, img, produc
     const [quantity, setQuantity] = useState(initialQuantity);
     const { removeFromCart, decrementQuantity, addToCart } = useContext(CartContext);
 
-    // Function to decrease quantity
+    // Function to decrease quantity, can not check stock because data is not stored there
     const decrement = () => {
         setQuantity((prev) => prev - 1);
     };
@@ -17,7 +17,6 @@ export default function CartItem({ id, initialQuantity, name, price, img, produc
         setQuantity((prev) => prev + 1);
     };
 
-    // Function to remove item from cart
     const handleRemoveItem = () => {
         removeFromCart(id);
     };
@@ -25,11 +24,11 @@ export default function CartItem({ id, initialQuantity, name, price, img, produc
     // useEffect to handle changes in quantity
     useEffect(() => {
         if (quantity === 0) {
-            removeFromCart(id); // Remove item when quantity reaches 0
+            removeFromCart(id); 
         } else if (quantity > initialQuantity) {
-            addToCart(product); // Add item to cart when quantity is increased
+            addToCart(product); 
         } else if (quantity < initialQuantity) {
-            decrementQuantity(product.itemId); // Decrement item when quantity is decreased
+            decrementQuantity(product.itemId); 
         }
     }, [quantity, removeFromCart, addToCart, decrementQuantity, id, initialQuantity, product]);
 
