@@ -60,28 +60,40 @@ class ItemService {
     return data
   }
 
+  // delete from cart, bud not delete from item info (just set stock=0)
   static async deleteItem(id) {
-    // let id = data.itemId
-    let status = await db.queryItem(id)
-    if (status.length < 1) {
-      return {
-        code: 404081,
-        message: 'Item does not exist'
-      }
+    let data = {
+      itemid: id,
+      stock: 0
     }
     try {
-      await db.deleteItem(id)
-      return {
-        code: 200,
-        message: 'success'
-      }
+      let status = await updateItemStock(data)
+      await db.deleteItemFromCart(id)
+      return status
     } catch (error) {
       console.log(error)
-      return {
-        code: 401081,
-        message: 'Database error'
-      }
     }
+    // origin design: true delete operation
+    // let status = await db.queryItem(id)
+    // if (status.length < 1) {
+    //   return {
+    //     code: 404081,
+    //     message: 'Item does not exist'
+    //   }
+    // }
+    // try {
+    //   await db.deleteItem(id)
+    //   return {
+    //     code: 200,
+    //     message: 'success'
+    //   }
+    // } catch (error) {
+    //   console.log(error)
+    //   return {
+    //     code: 401081,
+    //     message: 'Database error'
+    //   }
+    // }
   }
 
   static async updateItemStock(data) {

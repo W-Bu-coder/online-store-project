@@ -60,14 +60,14 @@ const hashPwd = async (req, res, next) => {
 //   createResponse(res, data)
 // })
 
-const dev = async (req, res, next) => {
-  console.log(req.pathname)
-  console.log(req.body)
-  console.log(req.query)
-  next()
-}
+// const dev = async (req, res, next) => {
+//   console.log(req.pathname)
+//   console.log(req.body)
+//   console.log(req.query)
+//   next()
+// }
 
-app.use(dev)
+// app.use(dev)
 
 // app.post('/api/login', hashPwd, async (req, res) => {
 app.post('/api/login', async (req, res) => {

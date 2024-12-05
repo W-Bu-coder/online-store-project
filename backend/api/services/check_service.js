@@ -50,7 +50,8 @@ class CheckService {
     return `#${timestamp}${random}`;
   }
 
-  static async checkCard(card) {
+  static checkCard(card) {
+    // console.log('check', card)
     let cardNumber = card.toString().replace(/[\s-]/g, '')
     if (/^\d{13,19}$/.test(cardNumber))
       return true
@@ -61,7 +62,8 @@ class CheckService {
     const [user, ...cart] = data
     let name = user.username
     let card = user.card
-    if (!this.checkCard(card)) {
+    let cardStatus = this.checkCard(card)
+    if (! cardStatus) {
       return {
         code: 401051,
         message: 'Invalid card',
