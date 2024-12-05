@@ -1,0 +1,128 @@
+import React, { useState,useContext}  from 'react';
+import { useNavigate } from 'react-router-dom';
+import SearchImage from '../img/Search.png';
+import { Link } from 'react-router-dom';
+import styles from '../css/LogRegister.module.css';
+import Alert from './Alert';
+import  CartContext from './CartContext';
+export default function Login(){
+		const [alertMessage, setAlertMessage] = useState(null); 
+		const [username, setUsername] = useState('');
+		const [password, setPassword] = useState('');
+		const {  setLogname,userName  } = useContext(CartContext);
+		const navigate = useNavigate();
+		const handleLogin = async () => {
+			if (!username || !password) {
+				setAlertMessage("Please enter both username and password");
+			  
+			  return;
+			}
+		
+			try {
+				
+				
+				// console.log(password1);
+			  const response = await fetch('http://10.147.19.129:3036/api/login', {
+				method: 'POST',
+				headers: {
+				  'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					username: username,  
+					password: password,
+				}),
+			  });
+		
+			  if (!response.ok) {
+				throw new Error('Login failed');
+			  }
+		
+			  const data = await response.json();
+				console.log(data);
+				// 根据 data.code 显示错误信息
+				if (data.code != 200) {
+					console.log("budi");
+					console.log('Setting alert message:', data.message);
+					setAlertMessage(data.message || 'An error occurred');
+				} else {
+					setAlertMessage(null); // 清空错误消息
+					console.log(username);
+					setLogname(username);
+					localStorage.removeItem('username');
+					localStorage.setItem('username', username);
+					localStorage.setItem('token', data.data.token);
+					console.log(userName);
+					if(data.data.role == 0){
+						navigate('/', { replace: true });
+					}
+					else if(data.data.role == 1){
+						navigate('/dashboard', { replace: true });
+					}
+					// 
+				}
+			} catch (err) {
+			  console.error('Error during login:', err.message);
+			  alert('Login failed.');
+			}
+		  };
+		  
+    return(
+        <>
+        {/* A header like what in Homepage but with a little difference */}
+        <header className={styles.AppHeader}>
+        <h1>
+			
+			Computer Store
+			
+		</h1>
+        
+         
+      </header>
+
+        <main>
+		{alertMessage && (
+                <Alert message={alertMessage} onClose={() => setAlertMessage(null)} />
+            )}
+        <div className={styles.Log}>
+
+           
+
+
+            <form className={styles.IdLog}>
+				<h1>Log In</h1>
+				<div className={styles.formgroup}>
+					<label>User Id:</label>
+					<input
+					type="text"
+					className={styles.formcontrol}
+					id="username"
+					placeholder="Your Id.."
+					value={username}
+					onChange={(e) => setUsername(e.target.value)} // 更新用户名
+					/>
+				</div>
+				<div className={styles.formgroup}>
+					<label>Password:</label>
+					<input
+					type="password"
+					className={styles.formcontrol}
+					id="password"
+					placeholder="Your Password.."
+					value={password}
+					onChange={(e) => setPassword(e.target.value)} // 更新密码
+					/>
+				</div>
+				<div className={styles.formcheck}>
+                <Link to="/register" >No account? Click to register.</Link>
+				</div>
+				<div  className={styles.btn} id="submit1"  onClick={handleLogin}>Log In</div>
+			</form>
+
+           
+        </div>
+
+        </main>
+        
+        </>
+    );
+}

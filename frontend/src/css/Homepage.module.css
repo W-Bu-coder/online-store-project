@@ -1,0 +1,207 @@
+
+.Homepage {
+    text-align: center;
+    font-size: 2vh;
+    width: 100%;
+    /* overflow-x: hidden; */
+  }
+ main {
+    height: 100vh;
+    margin-top: 12vh;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 15vw 79vw;
+    grid-template-rows: 80vh;
+    grid-column-gap: 2vw;
+  }
+  .Navigation{
+    border-right: 2px solid #185da2;
+    margin-left: 1vw;
+  }
+  .Homepage img{
+    width: 50px;
+    height: 50px;
+  }
+  .Navigation li{
+    cursor: pointer;
+    margin: 2px;
+    box-sizing: border-box;
+    padding-left: 3px;
+  }
+  .Navigation li:hover{
+    box-shadow: 0 2px rgba(51, 76, 118, 0.916);
+    border: solid 2px #3f71af;
+  }
+  .menuTitle{
+    width: 13vw;
+    height: 5vh;
+    font-size: 2vh;
+    line-height: 5vh;
+    text-align: left;
+    background-color: white;
+    padding-right: 0;
+    border: none;
+    color: black;
+    border-bottom: 1px solid #185da2;
+  }
+  .menuTitle img{
+    float: right;
+    height: 4vh;
+    object-fit: contain;
+  }
+  .extendMenu{
+    margin: 0;
+    padding: 0;
+  }
+  .item{
+    list-style: none;
+    text-align: left;
+    margin-left: 0.5vw;
+    height: 4vh;
+    align-items: center;
+    line-height: 4vh;
+  }
+  .item .StarIntroduce{
+    line-height: 2vh;
+    font-size: 1em;
+  }
+  .scale{
+    width: 11vw;
+    margin-left: 1vw;
+    margin-top: 1vh;
+  }
+  
+  /* right part */
+  .productAll{
+    display: grid;
+    grid-template-columns: repeat(4,20vw);
+  }
+  .productCard {
+    border: 1px solid #183e8aca;
+    padding: 2vh;
+    margin: 10px;
+    border-radius: 5px;
+    text-align: center;
+    background-color: #fff;
+  }
+  .productOption{
+    display: block;
+    height: 4vh;
+    width: 10vw;
+    line-height: 4vh;
+    margin-left: 3vw;
+    margin-top: 1vh;
+    padding: 0;
+}
+  .productTitle{
+    height: 8vh;
+    line-height: 8vh;
+    background-color: rgba(41, 138, 177, 0.107);
+    /* border: #185da2 solid 1px; */
+    font-size: 2.5vh;
+    padding-top: 0.5vh;
+    padding-bottom: 0.5vh;
+
+  }
+  .TotalResult{
+    float: left;
+    margin-left: 1vw;
+  }
+  .stockTitle{
+    float: right;
+    margin-right: 2vw;
+  }
+  .sortTitle{
+    margin-right: 1vw;
+  }
+  .SortingWay{
+    width: 15vw;
+    margin-top: 2vh;
+    /* height: 20vh; */
+}
+a{
+  text-decoration: none;
+}
+.productOption a{
+  text-decoration: none;
+  color: white;
+}
+.productOption{
+  background-color: #185da2;
+  border: 0;
+  color: white;
+  cursor: pointer;
+  border-radius: 10%;
+  font-size: 2vh;
+}
+.productOption:hover{
+  background-color: #d82906;
+}
+.menuTitle:hover{
+  background-color: white;
+}
+/* change add to cart */
+ .op span{
+  background-color: #185da2;
+  display: inline-block;
+  color: white;
+  width: 3.4vw;
+  text-align: center;
+  font-size: 3vh;
+  cursor: pointer;
+  /* margin: 0%; */
+} 
+.less, .more{
+  cursor: pointer;
+}
+.op .less{
+  border-radius: 15% 0 0 15%;
+}
+.op .more{
+  border-radius: 0 15% 15% 0;
+}
+.op .less:hover, .op .more:hover{
+  background-color: rgba(233, 50, 50, 0.903);
+}
+/* search part */
+.search{
+  float: left;
+  display: grid;
+  grid-template-columns: 20vw 9vw;
+  justify-items: stretch;
+  /* margin-top: 3vh; */
+  height: 6vh;
+  margin-left: 1.5vw;
+  
+}
+.search input{
+  outline: none;
+}
+.searchIcon{
+  object-fit: contain;
+  background-color: rgb(28, 56, 103);
+  height: 6vh;
+  padding: 2px;
+  cursor: pointer;
+}
+.Checkprice{
+  background-color: #185da2;
+  width: 7vw;
+  height: 4vh;
+  color: white;
+  font-size: 2.5vh;
+  line-height: 4vh;
+  margin-left: 2vw;
+  cursor: pointer;
+}
+.Checkprice:hover{
+  background-color: #d82906;
+}
+/* ProductCard */
+.productCard p{
+  margin: 5px;
+}
+.selectedNav{
+  box-shadow: 0 2px rgba(51, 76, 118, 0.916);
+    border: solid 2px #3f71af;
+}
