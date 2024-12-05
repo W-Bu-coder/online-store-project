@@ -36,7 +36,7 @@ export default function Dashboard(){
                     <li
                     key={index}
                     className={activeTab === index ? styles.active : ''}
-                    onClick={() => setActiveTab(index)} // 点击切换选项
+                    onClick={() => setActiveTab(index)} // toggle options
                     >
                     {item}
                     </li>

@@ -1,4 +1,4 @@
-import React, { useState }  from 'react';
+import React, { useState } from 'react';
 import Slider from '@mui/material/Slider';
 import styles from '../css/Homepage.module.css';
 import downImage from '../img/down.png';
@@ -7,49 +7,49 @@ function valuetext(value) {
 }
 // function should transit to parent
 export default function Navigation({
-  onCategoryChange, onBrandsChange, onPriceLowChange, onPriceHighChange 
+  onCategoryChange, onBrandsChange, onPriceLowChange, onPriceHighChange
 }) {
   // value should be passed
   const [value, setValue] = React.useState([0, 3000]);
-  const [priceLow, setPriceLow] = useState(0); // 最低价格
-  const [priceHigh, setPriceHigh] = useState(3000); // 最高价格
+  const [priceLow, setPriceLow] = useState(0);
+  const [priceHigh, setPriceHigh] = useState(3000);
   const [selectedCategory, setSelectedCategory] = React.useState('');
   const [selectedBrands, setSelectedBrands] = React.useState('');
   const handleCategorySelect = (category) => {
     setSelectedCategory(category);
-    onCategoryChange(category);  // 通知父组件更新Category
-    
+    onCategoryChange(category);
+
   };
 
   const handleBrandSelect = (brand) => {
     setSelectedBrands(brand);
-    onBrandsChange(brand);  // 通知父组件更新Brands
-    
+    onBrandsChange(brand);
+
   };
-   // 更新价格滑块的值
-   const handlePriceChange = (event, newValue) => {
+
+  const handlePriceChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  // 点击 Search 按钮时将滑块值传递到父组件
+  // execute when click search
   const handlePriceClick = () => {
-    const [low, high] = value; // 从 value 中获取最低价和最高价
-    onPriceLowChange?.(low);   // 传递最低价格
-    onPriceHighChange?.(high); // 传递最高价格
-    
+    const [low, high] = value;
+    onPriceLowChange?.(low);
+    onPriceHighChange?.(high);
+
   };
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  
-    return (
-      <div  className = {styles.Navigation}>
-        <div className = {styles.menu}>
+
+  return (
+    <div className={styles.Navigation}>
+      <div className={styles.menu}>
         <button className={styles.menuTitle}>Category
           <img src={downImage} alt="down" />
         </button>
         <ul className={styles.extendMenu}>
-        <li
+          <li
             className={`${styles.item} ${selectedCategory === '' ? styles.selectedNav : ''}`}
             onClick={() => handleCategorySelect('')}
           >
@@ -86,14 +86,14 @@ export default function Navigation({
             Accessory
           </li>
         </ul>
-        </div>
+      </div>
 
-        <div className={styles.menu}>
+      <div className={styles.menu}>
         <button className={styles.menuTitle}>Brands
           <img src={downImage} alt="down" />
         </button>
         <ul className={styles.extendMenu}>
-        <li
+          <li
             className={`${styles.item} ${selectedBrands === '' ? styles.selectedNav : ''}`}
             onClick={() => handleBrandSelect('')}
           >
@@ -124,34 +124,33 @@ export default function Navigation({
             LENOVO
           </li>
         </ul>
-        </div>
+      </div>
 
-        <div className={styles.menu}>
+      <div className={styles.menu}>
         <button className={styles.menuTitle}>Price
           <img src={downImage} alt="down" />
         </button>
         <div className={styles.scale}>
           <Slider
-          getAriaLabel={() => 'Minimum distance'}
-          value={value}
-          onChange={handlePriceChange}
-          valueLabelDisplay="auto"
-          getAriaValueText={valuetext}
-          min={0}
-          max={3000}
-          disableSwap
+            getAriaLabel={() => 'Minimum distance'}
+            value={value}
+            onChange={handlePriceChange}
+            valueLabelDisplay="auto"
+            getAriaValueText={valuetext}
+            min={0}
+            max={3000}
+            disableSwap
           />
           <div className={styles.Checkprice} onClick={handlePriceClick} >
             Search
           </div>
         </div>
-        </div>
-
-       
-
-        
       </div>
-    );
-  }
-  
- 
+
+
+
+
+    </div>
+  );
+}
+

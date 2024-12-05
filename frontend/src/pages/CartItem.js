@@ -1,5 +1,4 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import DeleteImage from '../img/delete.png';
 import styles from '../css/header.module.css';
 import CartContext from './CartContext';

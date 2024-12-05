@@ -15,6 +15,7 @@ const address = '10.147.19.129' //zeroTier address of backend
 startServer()
 const app = express()
 app.use(express.json())
+app.use(cors());
 const helmet = require('helmet');
 app.use(
   helmet({
@@ -91,7 +92,11 @@ app.post('/api/register', hashPwd, async (req, res) => {
     createResponse(res, null, 404, 'Data not found')
   }
 })
-
+// get item list
+app.get('/api/item/list', async (req, res) => {
+  let data = await ItemService.getItemList(req.query)
+  createResponse(res, data)
+})
 // add JWT authentication
 // app.use(checkToken)
 // app.post('/api/logout', async (req, res) => {}
@@ -104,11 +109,6 @@ app.get('/api/user/info', async (req, res) => {
 app.post('/api/user/info', async (req, res) => {
   let { status, code } = await UserService.updateUserInfo(req.body)
   createResponse(res, null, code, status)
-})
-// get item list
-app.get('/api/item/list', async (req, res) => {
-  let data = await ItemService.getItemList(req.query)
-  createResponse(res, data)
 })
 // get item detail
 app.get('/api/item/details', async (req, res) => {
@@ -180,7 +180,6 @@ app.put('/api/item/stock', checkRole(), async (req, res) => {
 async function startServer() {
   try {
     await UserService.initDB();
-    app.use(cors());
     app.listen(port, address, () => {
       console.log(`Backend is listening on ${port}`)
     })

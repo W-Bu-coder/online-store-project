@@ -1,4 +1,4 @@
-import React, { useState,useContext,useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from './Header';
 import CartItem from './CartItem';
@@ -6,77 +6,76 @@ import ProfileInfo from './ProfileInfo';
 import ProfileHistory from './ProfileHistory';
 import styles from '../css/UserProfile.module.css';
 import { Link } from 'react-router-dom';
-import  CartContext from './CartContext';
-export default function UserProfile(){
-    const [activeTab, setActiveTab] = useState(0);
-    const navigate = useNavigate();
-    // control to show edit
-   
-    const  userName =localStorage.getItem('username');
-    const [loading, setLoading] = useState(true);  // 用于控制加载状态
-    const [error, setError] = useState(null);
-    const [user,setUser] = useState(null);
-    
-    // ul li
-    const menuItems = [
-        'My Information',
-        
-        'Purchase History',
-        'Log out',
-      ];
-    // manage ul
-    const handleMenuClick = (index) => {
-        if (menuItems[index] === 'Log out') {
-            if (window.confirm('Are you sure you want to log out?')) {
-                localStorage.removeItem('username');
-                navigate('/login', { replace: true });
-            }
-        }
-        setActiveTab(index); // 应该是更新 activeTab
-    };
-    
-      const tabContents = [
-        (
-           <ProfileInfo />
-        ),
-       
-        (
-         
-          <ProfileHistory />
-        ),
-        
-        (
-          <div>
-            <h2>Log Out</h2>
-            <p>You didn't log out.</p>
-          </div>
-        ),
-      ];
-    return(
-        <>
-        <Header />
-        <main className={styles.profileMain}>
-            {/* choose a way to change the thing shown in the right */}
-            
-            <div className={styles.LeftBar}>
-                <h2>My Profile</h2>
-                <ul>
-                {menuItems.map((item, index) => (
-                    <li
-                    key={index}
-                    className={`${styles.menuItem} ${activeTab === index ? styles.active : ''}`}
-                    onClick={() => handleMenuClick(index)} // 点击切换选项
-                    >
-                    {item}
-                    </li>
-                ))}
-                </ul>
-            </div>
+import CartContext from './CartContext';
+export default function UserProfile() {
+  const [activeTab, setActiveTab] = useState(0);
+  const navigate = useNavigate();
+  // control to show edit
+  const userName = localStorage.getItem('username');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [user, setUser] = useState(null);
 
-            <div className={styles.RightContent}>
-             {/* infomation, use grid to control */}
-             {tabContents[activeTab]}
-                {/* <div className='infomation'>
+  // ul li
+  const menuItems = [
+    'My Information',
+
+    'Purchase History',
+    'Log out',
+  ];
+  // manage ul
+  const handleMenuClick = (index) => {
+    if (menuItems[index] === 'Log out') {
+      if (window.confirm('Are you sure you want to log out?')) {
+        localStorage.removeItem('username');
+        navigate('/login', { replace: true });
+      }
+    }
+    setActiveTab(index);
+  };
+
+  const tabContents = [
+    (
+      <ProfileInfo />
+    ),
+
+    (
+
+      <ProfileHistory />
+    ),
+
+    (
+      <div>
+        <h2>Log Out</h2>
+        <p>You didn't log out.</p>
+      </div>
+    ),
+  ];
+  return (
+    <>
+      <Header />
+      <main className={styles.profileMain}>
+        {/* choose a way to change the thing shown in the right */}
+
+        <div className={styles.LeftBar}>
+          <h2>My Profile</h2>
+          <ul>
+            {menuItems.map((item, index) => (
+              <li
+                key={index}
+                className={`${styles.menuItem} ${activeTab === index ? styles.active : ''}`}
+                onClick={() => handleMenuClick(index)}
+              >
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className={styles.RightContent}>
+          {/* infomation, use grid to control */}
+          {tabContents[activeTab]}
+          {/* <div className='infomation'>
                 <div className={styles.showDetail} id="UserDetail">
                     <div className={styles.UserInfo}>
                         <span className={styles.infoname}>ID :</span>
@@ -117,8 +116,8 @@ export default function UserProfile(){
                     <div className={styles.but}>
                         <button className={styles.btnEdit}>Edit</button>
                     </div> */}
-                    {/* also can be modified */}
-                    {/* <form className={styles.EditInfo}>
+          {/* also can be modified */}
+          {/* <form className={styles.EditInfo}>
                         ID :<span>1</span>
                         <label for="firstname">First Name:</label>
                         <input type="text" id="firstname" title="firstname" />
@@ -140,9 +139,9 @@ export default function UserProfile(){
 
                     </div>
                 </div> */}
-                    
-               {/* change password */}     
-                {/* <div className={styles.Change}>
+
+          {/* change password */}
+          {/* <div className={styles.Change}>
                     <div className={styles.formgroup}>
 					    <label>Password</label>
 					    <input type="password" className={styles.formcontrol} id="password"/>
@@ -160,27 +159,27 @@ export default function UserProfile(){
                         Confirm
                     </button>
                 </div> */}
-                 {/* My Cart */}
-            
-                 {/* <div className={styles.ShowContent}> */}
-                    {/* should create a compent to gengerate */}
-                    {/* <CartItem/>
+          {/* My Cart */}
+
+          {/* <div className={styles.ShowContent}> */}
+          {/* should create a compent to gengerate */}
+          {/* <CartItem/>
                     <button>
                     Buy Them!
                     </button>
                 </div> */}
-                
-            
 
-                    {/* Purchase History */}
-                    {/* <div className={styles.All}> */}
-                        {/* should also have a acomponent */}
-                        {/* <PurchaseItem />
+
+
+          {/* Purchase History */}
+          {/* <div className={styles.All}> */}
+          {/* should also have a acomponent */}
+          {/* <PurchaseItem />
                     </div> */}
-            </div>
-                
-           
-        </main>
-        </>
-    );
+        </div>
+
+
+      </main>
+    </>
+  );
 }

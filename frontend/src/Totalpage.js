@@ -10,7 +10,7 @@ import Payment from './pages/Payment';
 import SuccessPay from './pages/SuccessPay';
 import Dashboard from './pages/Dashboard';
 import { CartProvider } from './pages/CartContext';
-//for 管理员
+//for admin
 
 
 export default function App() {
@@ -20,7 +20,7 @@ export default function App() {
       <Routes>
           <Route path="/login" element={ <Login /> } /> 
           <Route path="/register" element={ <Register />} /> 
-          {/* 包裹 CartContext 的页面 */}
+          {/* wapped by CartContext*/}
           <Route
                     path="/*"
                     element={

@@ -2,27 +2,28 @@ import React, { useState }  from 'react';
 import styles from '../css/Alert.module.css';
 import CloseImage from '../img/close.png';
 export default function ConfirmOrder({itemId, onClose, onDelete }){
-    const [isVisible, setIsVisible] = useState(true); // 控制 div 的显示状态
+    const [isVisible, setIsVisible] = useState(true); 
     const item = itemId.slice(1);
     const handleClose = () => {
-        setIsVisible(false); // 点击时隐藏组件
-        onClose(); // 调用关闭回调，父组件清空消息
+        setIsVisible(false); 
+        onClose(); 
     };
     if (!isVisible) {
-        return null; // 如果不显示，直接返回 null
+        return null;
     }
 
     if (!isVisible) {
-        return null; // 如果不显示，直接返回 null
+        return null;
     }
     const handleDelete = async () => {
         try {
-            const response = await fetch(`http://10.147.19.129:3036/api/order/info?orderId=${item}`, { // 替换为后端 API 地址
+            const response = await fetch(`http://10.147.19.129:3036/api/order/info?orderId=${item}`, { 
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
                 },
-                body: JSON.stringify({ itemId }), // 将 itemId 作为 JSON 数据发送
+                body: JSON.stringify({ itemId }),
             });
 
             if (response.ok) {
@@ -30,7 +31,7 @@ export default function ConfirmOrder({itemId, onClose, onDelete }){
                 console.log('Item deleted successfully:', result);
                 onClose();
                 onDelete();
-                setIsVisible(false); // 请求成功后隐藏弹窗
+                setIsVisible(false); 
                 
             } else {
                 console.error('Failed to delete item:', response.status, response.statusText);

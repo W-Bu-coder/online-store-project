@@ -36,11 +36,9 @@ export default function ProductList({ category, brands, priceLow, priceHigh }) {
   
   // show the product card
   const [productCards, setproductCards] = useState([]);
-  const [loading, setLoading] = useState(true);  // 用于控制加载状态
-  const [error, setError] = useState(null);  // 用于保存错误信息
+  const [loading, setLoading] = useState(true); 
+  const [error, setError] = useState(null);
   
-
-
   
   useEffect(() => {
     const fetchProducts = async () => {
@@ -53,19 +51,16 @@ export default function ProductList({ category, brands, priceLow, priceHigh }) {
               Price_Low: priceLow,
               Price_High: priceHigh,
           });
-
           const url = `http://10.147.19.129:3036/api/item/list?${queryParams}`;
-          
           const response = await fetch(url);
 
             if (!response.ok) {
                 throw new Error('Failed to fetch products');
             }
-
             const data = await response.json();
             console.log(data);
             setproductCards(data.data);
-            setFilteredProducts(data.data); // 初始化为全部产品
+            setFilteredProducts(data.data); // initially show all
         } catch (err) {
             setError(err.message);
         } finally {
@@ -74,26 +69,25 @@ export default function ProductList({ category, brands, priceLow, priceHigh }) {
     };
 
     fetchProducts();
-}, [category, brands, priceLow, priceHigh]); // 当任何参数变化时重新发送请求
+}, [category, brands, priceLow, priceHigh]); 
 // search function
 const [searchQuery, setSearchQuery] = useState(''); 
-const [filteredProducts, setFilteredProducts] = useState([]);  // 存储经过过滤的商品数据
+const [filteredProducts, setFilteredProducts] = useState([]); 
 
- // 搜索框变化时更新搜索关键字并过滤产品
  const handleSelectChange = (event) => {
   const selectedValue = event.target.value;
   setSelect(selectedValue);
 
-  let sortedProducts = [...filteredProducts]; // 克隆 filteredProducts 数组
+  let sortedProducts = [...filteredProducts]; 
 
   if (selectedValue === "Price") {
-    // 按价格从高到低排序
+    // price high to low
     sortedProducts.sort((a, b) => b.price - a.price);
   } else if (selectedValue === "revPrice") {
-    // 按价格从低到高排序
+    // price low to high
     sortedProducts.sort((a, b) => a.price - b.price);
   } else if (selectedValue === "rate") {
-    // 按热门评分排序
+    // sort by rate
     sortedProducts.sort((a, b) => b.rate - a.rate);
   } 
 
