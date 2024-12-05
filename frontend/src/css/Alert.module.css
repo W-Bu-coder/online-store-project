@@ -1,0 +1,73 @@
+.confirmDelete{
+    position: absolute;
+    background-color: white;
+    width: 30vw;
+    height: 30vh;
+    top: 42vh;
+    left: 20vw;
+    padding: 3vh;
+    border-radius: 10%;
+    border: solid 2px rgb(51, 76, 118);
+    /* display: none; */
+  }
+  .confirmDelete h3{
+    height: 8vh;
+    font-size: 5vh;
+    margin: 0;
+  }
+  .confirmClose{
+    height: 5vh;
+    float: right;
+    object-fit: contain;
+    cursor: pointer;
+  }
+  .ConfirmDetail{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 3vw;
+  }
+  .ConfirmDetail p{
+    grid-column: span 2;
+    font-size: 3vh;
+    background-color: #eff1ffc3;
+    height: 8vh;
+    line-height: 8vh;
+    padding-left: 1vw;
+    border-radius: 15%;
+  }
+  .ConfirmDetail .Back{
+    height: 5vh;
+    font-size: 3vh;
+    width: 8vw;
+    margin-left: 10vw;
+    /* line-height: 5vh; */
+  }
+  .ConfirmDelete{
+    background-color: #d82906;
+  }
+  .DeleteCom{
+    top: 30vh;
+    left: 30vw;
+    position: fixed;
+    background-color: white;
+    width: 30vw;
+    height: 30vh;
+    padding: 3vh;
+    border-radius: 10%;
+    border: solid 2px rgb(51, 76, 118);
+    /* display: none; */
+  }
+  .DeleteCom h3{
+    height: 8vh;
+    font-size: 5vh;
+    margin: 0;
+  }
+  #DeleteCom{
+    background-color: #d82906;
+  }
+  .deleteback{
+    height: 5vh;
+    font-size: 3vh;
+    width: 8vw;
+    margin-left: 2vw;
+  }
