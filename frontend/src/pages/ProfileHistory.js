@@ -32,7 +32,7 @@ export default function () {
     fetchPurchaseHistory();
   }, []);
   return (
-    <div className={styles.All}>
+    <div className={styles.All} style={{overflow:'auto'}}>
       <h1>History</h1>
       {purchaseHistory.length > 0 ? (
         purchaseHistory.map((item, index) => (

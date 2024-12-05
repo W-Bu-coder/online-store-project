@@ -86,18 +86,24 @@ export default function ProductCard({ product }) {
   };
   return (
     <div className={styles.productCard}>
+      <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'around'}}>
+      <div>
       <img src={`data:image/jpeg;base64,${product.img}`} alt={product.productName} />
       <p>{product.name}</p>
       <p>${product.price}</p>
-      <p>Rate : {product.rate}</p>
-      <p>Stock : {product.stock}</p>
+      <p>Rate: {product.rate}</p>
+      <p>Stock: {product.stock}</p>
+      </div>
+      <div>
       {showAddToCart ? (
+      <div>
         <button
           className={styles.productOption}
           onClick={handleAddToCart}
         >
           Add to Cart
         </button>
+        </div>
       ) : (
         <div className={styles.op}>
           <span className={styles.less} onClick={decrement}>-</span>
@@ -106,9 +112,15 @@ export default function ProductCard({ product }) {
         </div>
       )}
 
-      <button className={styles.productOption} onClick={() => handleDetailClick(product.itemId)} >
-        See more details
-      </button>
+      <div className={styles.container}>
+        <button className={styles.productOption} onClick={() => handleDetailClick(product.itemId)} >
+
+          See more detail
+
+        </button>
+      </div>
+      </div>
+      </div>
     </div>
   );
 }

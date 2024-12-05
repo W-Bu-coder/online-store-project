@@ -29,7 +29,7 @@ export default function PurchaseItem({ data }) {
 
   };
   return (
-    <div className={styles.PurchaseItem}>
+    <div className={styles.PurchaseItem} style={{minHeight: '160px'}}>
       <div className={styles.title}>
         <span className={styles.order}>Order Code : <span className={styles.codeNumber}>{data.id}</span></span>
         <span className={styles.orderDate}>{new Date(data.time).toLocaleString('en-US')}&nbsp;</span>

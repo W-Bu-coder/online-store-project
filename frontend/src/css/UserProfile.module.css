@@ -4,6 +4,7 @@
     grid-column-gap: 1vw;
     /* background-color: aliceblue; */
 }
+
 .profileMain .LeftBar{
     width: 18vw;
     margin-left: 1vw;
@@ -43,8 +44,22 @@
     border: solid 2px #3f71af;
     padding: 2vw;
 }
+
+@media (max-width: 1024px) {
+  .profileMain{
+    display: flex;
+    flex-direction: column;
+    gap: 20px
+}
+.profileMain .LeftBar {
+  display: block;
+  min-height: 200px;
+  width: 80%;
+  overflow: hidden;
+}
+}
 /* initially expect info all display none */
-.infomation,.Change,.All,.ShowContent{
+.information,.Change,.All,.ShowContent{
     background-color: white;
     padding: 2vh;
     height: 70vh;
@@ -57,9 +72,11 @@
     margin-bottom: 3vh;
 }
 .showDetail{
+    margin-top: 10px;
     display: grid;
-    grid-template-columns: 30vw;
+    /* grid-template-columns: 30vw; */
     grid-template-rows: repeat(9,5vh);
+    gap: 1vh;
     background-color: #ebe8e82c;
     padding-left: 1vw;
     /* height: 80vh; */
@@ -151,10 +168,13 @@
 .OrderContent button a{
     color: white;
 }
+
+@media (max-width: 1024px) {
+  .OrderContent button{
+    font-size: 0.8em;
+  }
+}
+
 .buybtn a {
     color: white;
-}
-.active{
-    box-shadow: 0 2px rgba(51, 76, 118, 0.916);
-    border: solid 2px #3f71af;
 }

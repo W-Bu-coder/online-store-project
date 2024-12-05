@@ -127,7 +127,7 @@ const handleSearchClick = () => {
             </div>
         
         
-        <div className={styles.stockTitle}>
+        <div className={styles.stockTitle} style={{marginRight: '5%'}}>
         <span className={styles.sortTitle}>Sort</span>
         <FormControl className={styles.SortingWay}>
         <InputLabel id="demo-simple-select-label" className={styles.notice}>Select a sorting way...</InputLabel>

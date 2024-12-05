@@ -107,11 +107,11 @@ export default function ProfileInfo() {
     }
   };
   return (
-    <div className={styles.infomation}>
+    <div className={styles.information}>
       {alertMessage && (
         <Alert message={alertMessage} onClose={() => setAlertMessage(null)} />
       )}
-      <h1>Infomation</h1>
+      <h1>Information</h1>
       {!isEditing ? (<div className={styles.showDetail} id="UserDetail">
         <div className={styles.UserInfo}>
           <span className={styles.infoname}>User name: </span>
@@ -145,59 +145,60 @@ export default function ProfileInfo() {
       </div>
       ) : (
         <form className={styles.EditInfo}>
-          <span className={styles.infoname}>User name: </span>
-          <span className={styles.infocontent} id="firstName">{user.username}</span>
-
-          <label htmlFor="state">Province: </label>
-          <input
-            type="text"
-            id="State"
-            title="state"
-            value={province}
-            placeholder={user.province}
-            onChange={(e) => setProvince(e.target.value)}
-          />
-
-          <label htmlFor="city">City: </label>
-          <input
-            type="text"
-            id="City"
-            title="city"
-            value={city}
-            placeholder={user.city}
-            onChange={(e) => setCity(e.target.value)}
-          />
-
-          <label htmlFor="address">Address: </label>
-          <input
-            type="text"
-            id="Address"
-            title="address"
-            value={address}
-            placeholder={user.address}
-            onChange={(e) => setAddress(e.target.value)}
-          />
-
-          <label htmlFor="email">Email: </label>
-          <input
-            type="email"
-            id="Email"
-            title="email"
-            value={email}
-            placeholder={user.email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-
-          <label htmlFor="zip">Postcode: </label>
-          <input
-            type="text"
-            id="Zip"
-            title="zip"
-            value={postcode}
-            placeholder={user.postcode}
-            onChange={(e) => setPostcode(e.target.value)}
-          />
-
+          <div>
+            <span className={styles.infoname}>User name: </span>
+            <span className={styles.infocontent} id="firstName">{user.username}</span>
+          </div><div>
+            <label htmlFor="state">Province: </label>
+            <input
+              type="text"
+              id="State"
+              title="state"
+              value={province}
+              placeholder={user.province}
+              onChange={(e) => setProvince(e.target.value)}
+            />
+          </div><div>
+            <label htmlFor="city">City: </label>
+            <input
+              type="text"
+              id="City"
+              title="city"
+              value={city}
+              placeholder={user.city}
+              onChange={(e) => setCity(e.target.value)}
+            />
+          </div><div>
+            <label htmlFor="address">Address: </label>
+            <input
+              type="text"
+              id="Address"
+              title="address"
+              value={address}
+              placeholder={user.address}
+              onChange={(e) => setAddress(e.target.value)}
+            />
+          </div><div>
+            <label htmlFor="email">Email: </label>
+            <input
+              type="email"
+              id="Email"
+              title="email"
+              value={email}
+              placeholder={user.email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div><div>
+            <label htmlFor="zip">Postcode: </label>
+            <input
+              type="text"
+              id="Zip"
+              title="zip"
+              value={postcode}
+              placeholder={user.postcode}
+              onChange={(e) => setPostcode(e.target.value)}
+            />
+          </div>
           <button id="btnBack" type="button" onClick={showUserDetail}>Back</button>
           <button id="btnSave" type="submit" onClick={handleSave}>Save</button>
         </form>

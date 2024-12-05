@@ -30,9 +30,9 @@ export default function UserProfile() {
         navigate('/login', { replace: true });
       } else {
         if (window.confirm('Are you sure you want to log out?')) {
-          localStorage.removeItem('username');
-          navigate('/login', { replace: true });
-        }
+        localStorage.removeItem('username');
+        navigate('/login', { replace: true });
+      }
       }
 
     }

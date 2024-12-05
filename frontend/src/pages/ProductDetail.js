@@ -135,13 +135,20 @@ export default function ProductDetail() {
           <h2>Price: <span className={styles.price} data-value="449.99">${productDetail.price}</span></h2>
           <div className={styles.rate}>
             {/* UI API of star */}
-            <Rating name="half-rating-read" defaultValue={productDetail.rate} precision={0.5} readOnly />
+            <Rating name="half-rating-read" className="custom-rating" defaultValue={productDetail.rate} precision={0.5} readOnly sx=
+              {{
+                '& .MuiRating-decimal': {
+                  display: 'inline-flex',
+                  position: 'relative',
+                  transform: 'none'
+                }
+              }} />
             <span>
-              <span id='point'>{productDetail.rate} </span>
+              <span id='point'> {productDetail.rate} </span>
               out of 5
             </span>
           </div>
-          <h2>Stock : {productDetail.stock}</h2>
+          <h2>Stock: {productDetail.stock}</h2>
 
           {showAddToCart ? (
             <button
