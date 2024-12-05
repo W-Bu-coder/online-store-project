@@ -9,8 +9,8 @@ class CartService {
       let result = await db.updateCartList(user.username, cart)
       return {
         data: result,
-        code: 200,
-        message: 'success'
+        code: 401041,
+        message: 'Out of stock'
       }
     } catch (error) {
       return {
@@ -65,11 +65,11 @@ class CartService {
   static async valCartList(data) {
     let val = await this.updateCartList(data)
     // out of stock
-    if (val !== null) {
+    if (val.data !== null) {
       return {
         code: 400041,
         message: 'Out of stock!',
-        data: val
+        data: val.data
       }
     }
     // get info from database

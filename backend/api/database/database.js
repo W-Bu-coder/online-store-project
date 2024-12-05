@@ -187,6 +187,7 @@ class Database {
   }
 
   deleteCartList = async (id) => {
+    console.log('delete cart:',id)
     const sql = 'DELETE FROM cart_list WHERE id = ?';
     try {
       await this.pool.execute(sql, [id]);
@@ -243,7 +244,7 @@ class Database {
   updateCartList = async (name, data) => {
     let id = await this.queryUserId(name)
     if(id == null) {
-
+      return null
     }
     let suf = (await this.queryStockStatus(data)).filter(item => !!item)
     console.log(suf)

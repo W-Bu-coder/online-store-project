@@ -7,7 +7,8 @@ class CheckService {
   static async handlePurchase(name, cart) {
     let result = null
     try {
-      await db.deleteCartList(name)
+      let id = await db.queryUserId(name)
+      await db.deleteCartList(id)
       result = await Promise.all(cart.map(async item => {
         let modify = await db.updateStock(item.id, item.qty, 'sub')
         if (modify === null) {
@@ -53,7 +54,7 @@ class CheckService {
   static checkCard(card) {
     // console.log('check', card)
     let cardNumber = card.toString().replace(/[\s-]/g, '')
-    if (/^\d{13,19}$/.test(cardNumber))
+    if (/^\d{13,19}$/.test(cardNumber) === true)
       return true
     return false
   }
@@ -62,8 +63,10 @@ class CheckService {
     const [user, ...cart] = data
     let name = user.username
     let card = user.card
+    console.log('start checkout:',name)
     let cardStatus = this.checkCard(card)
-    if (! cardStatus) {
+    // console.log('card validation:',cardStatus)
+    if (cardStatus === false) {
       return {
         code: 401051,
         message: 'Invalid card',
@@ -71,20 +74,23 @@ class CheckService {
       }
     }
     let val = await db.updateCartList(name, cart)
-    if (val !== null) {
+    if (val !== null && val.data !== null) {
       return {
         code: 400051,
         message: 'Out of stock!',
-        data: val
+        data: val.data
       }
     }
     try {
       let timestamp = await this.getTime()
       let order_id = await this.createOrderID(timestamp)
+      console.log('orderId', order_id)
       let pay = await this.handlePurchase(name, cart)
       console.log('pay: ', pay)
       await db.insertOrder(order_id, name, card, pay, timestamp)
-      return await EmailService.send(name)
+      let res = await EmailService.send(name)
+      console.log('email res:',res)
+      return res
     } catch (error) {
       return {
         code: 400052,

@@ -27,6 +27,7 @@ class EmailService {
     console.log(items)
     if (orderData === null) {
       return {
+        data: null,
         message: 'Order not found',
         code: 404031
       }
@@ -77,23 +78,24 @@ class EmailService {
       html: content
     }
 
-    await new Promise((reslove, reject) => {
+    return new Promise((resolve, reject) => {
       transporter.sendMail(mailobj, (err, data) => {
         if (err) {
-          console.log(err)
-          reject()
-          return {
-            message: 'Email address not found', code: 404032, data: null
-          }
+          console.log(err);
+          reject({
+            message: 'Email address not found',
+            code: 404032,
+            data: null
+          });
         } else {
-          reslove()
-          return {
-            code: 200, message: 'success', data: null
-          }
+          resolve({
+            code: 200,
+            message: 'success',
+            data: null
+          });
         }
-      })
-    })
-
+      });
+    });
   }
 
 }

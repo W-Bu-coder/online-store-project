@@ -22,7 +22,7 @@ class OrderService {
         totalPrice += Number(i.total)
       })
       item.totalPrice = totalPrice
-      item.time = item.time.toString()
+      item.time = item.time.toString().
       return item
     }))
     return result

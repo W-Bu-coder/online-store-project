@@ -136,7 +136,7 @@ app.post('/api/cart/validation', async (req, res) => {
 // complete checkout and send email
 app.post('/api/checkout', async (req, res) => {
   let result = await CheckService.handleCheckout(req.body)
-  createResponse(res, result)
+  createResponse(res, result.data, result.code, result.message)
 })
 // user check purchase history
 app.get('/api/order/list', async (req, res) => {
