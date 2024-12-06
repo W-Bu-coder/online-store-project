@@ -35,7 +35,7 @@ export default function Login() {
       const data = await response.json();
       console.log(data);
       if (data.code != 200) {
-        console.log("budi");
+        // console.log("budi");
         console.log('Setting alert message:', data.message);
         setAlertMessage(data.message || 'An error occurred');
       } else {
@@ -77,7 +77,7 @@ export default function Login() {
           <form className={styles.IdLog}>
             <h1>Log In</h1>
             <div className={styles.formgroup}>
-              <label>User Name:</label>
+              <label>Name:</label>
               <input
                 type="text"
                 className={styles.formcontrol}
@@ -101,7 +101,7 @@ export default function Login() {
             <div className={styles.formcheck}>
               <Link to="/register" >No account? Click to register.</Link>
             </div>
-            <div className={styles.btn} id="submit1" onClick={handleLogin}>Log In</div>
+            <div className={styles.btn} id="submit1" onClick={handleLogin}>Log in</div>
           </form>
 
 

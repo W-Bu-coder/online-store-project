@@ -1,12 +1,13 @@
 import React, { createContext, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 // create cart context
 const CartContext = createContext();
-
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
   const [currentItemID, setCurrentItemID] = useState(null); //see product detail
   const [userName, setUsername] = useState(null); //get the user loged
   const username = localStorage.getItem('username');
+  const navigate = useNavigate();
   // console.log(username);
   useEffect(() => {
     const fetchCartData = async () => {
@@ -15,20 +16,25 @@ export const CartProvider = ({ children }) => {
       }
       try {
         const username = localStorage.getItem('username');
+        // console.log(localStorage.getItem('token'))
         const response = await fetch(`http://10.147.19.129:3036/api/cart/list?username=${username}`, {
+          withCredentials: true,
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
           }
         });
+        // console.log(response)
         if (response.ok) {
           const data = await response.json();
           setCartItems(data.data || []);
           console.log(data);
+        } else if (response.status == 403) {
+          navigate('/login', { replace: true });
         } else {
           console.error('Failed to fetch cart data');
         }
       } catch (error) {
-        console.error('Error fetching cart data:', error);
+        console.log(error)
       }
     };
 

@@ -35,13 +35,12 @@ const signToken = (username, role) => {
 // }
 
 const checkToken = (req, res, next) => {
-  const authHeader = req.headers['authorization']
+  const authHeader = req.headers['Authorization']
+  console.log('authHeader',authHeader)
   const token = authHeader && authHeader.split(' ')[1] // Bearer TOKEN
-
   if (!token) {
     return res.status(403).json({ message: 'Invalid request, please log in' })
   }
-
   jwt.verify(token, JWT_SECRET, (err, user) => {
     if (err) {
       return res.status(403).json({ message: 'Invalid request, please log in' })

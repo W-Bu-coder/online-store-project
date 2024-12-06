@@ -2,7 +2,6 @@ import React, { useEffect, useState, useContext } from 'react';
 import Header from './Header';
 import CommentItem from './CommentItem';
 import Rating from '@mui/material/Rating';
-import ComImage from '../img/computer.jpg';
 import styles from '../css/productDetail.module.css';
 import CartContext from './CartContext';
 export default function ProductDetail() {

@@ -25,6 +25,7 @@ export default function OrderManage() {
     console.log(new1);
     try {
       const response = await fetch(`http://10.147.19.129:3036/api/order/details?orderId=${new1}`, {
+        withCredentials: true,
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
@@ -64,6 +65,7 @@ export default function OrderManage() {
 
       try {
         const response = await fetch('http://10.147.19.129:3036/api/order/fullist', {
+          withCredentials: true,
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
           }

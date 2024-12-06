@@ -19,6 +19,7 @@ export default function History() {
       setLoading(true);
       try {
         const response = await fetch(`http://10.147.19.129:3036/api/order/details?orderId=${new1}`, {
+          withCredentials: true,
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
           }

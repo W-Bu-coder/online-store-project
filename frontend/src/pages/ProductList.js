@@ -53,7 +53,6 @@ export default function ProductList({ category, brands, priceLow, priceHigh }) {
           });
           const url = `http://10.147.19.129:3036/api/item/list?${queryParams}`;
           const response = await fetch(url);
-
             if (!response.ok) {
                 throw new Error('Failed to fetch products');
             }
@@ -167,7 +166,7 @@ const handleSearchClick = () => {
             } product={productCard} />
           ))
         ) : (
-          <div>No products found</div>
+          <div>No product found</div>
         )}
       </div>
       

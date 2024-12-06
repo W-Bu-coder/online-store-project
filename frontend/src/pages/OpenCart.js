@@ -39,6 +39,7 @@ export default function OpenCart({ setIsCartOpen }) {
     try {
       const response = await fetch('http://10.147.19.129:3036/api/cart/list', {
         method: 'PUT',
+        withCredentials: true,
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -75,6 +76,7 @@ export default function OpenCart({ setIsCartOpen }) {
     try {
       const response = await fetch('http://10.147.19.129:3036/api/cart/validation', {
         method: 'POST',
+        withCredentials: true,
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token')}`

@@ -19,6 +19,7 @@ export default function Confirm({ itemId, onClose, onDeleteSuccess }) {
     try {
       const response = await fetch(`http://10.147.19.129:3036/api/item/info?itemId=${itemId}`, {
         method: 'DELETE',
+        withCredentials: true,
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token')}`

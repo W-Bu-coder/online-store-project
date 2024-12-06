@@ -1,12 +1,9 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from './Header';
-import CartItem from './CartItem';
 import ProfileInfo from './ProfileInfo';
 import ProfileHistory from './ProfileHistory';
 import styles from '../css/UserProfile.module.css';
-import { Link } from 'react-router-dom';
-import CartContext from './CartContext';
 export default function UserProfile() {
   const [activeTab, setActiveTab] = useState(0);
   const navigate = useNavigate();
@@ -26,7 +23,7 @@ export default function UserProfile() {
   // manage ul
   const handleMenuClick = (index) => {
     if (menuItems[index] === 'Log out') {
-      if (localStorage.getItem("keyName") == null) {
+      if (localStorage.getItem("username") == null) {
         navigate('/login', { replace: true });
       } else {
         if (window.confirm('Are you sure you want to log out?')) {

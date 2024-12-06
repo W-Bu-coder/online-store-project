@@ -1,6 +1,5 @@
 import React from 'react';
 import Header from './Header';
-import HistoryItem from './HistoryItem';
 import { Link } from 'react-router-dom';
 import SuccessImage from '../img/success.png';
 import styles from '../css/Payment.module.css';

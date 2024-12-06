@@ -125,6 +125,7 @@ app.put('/api/cart/list', async (req, res) => {
 })
 // get existed cart list
 app.get('/api/cart/list', async (req, res) => {
+  console.log(req.header)
   let result = await CartService.getCartList(req.query.username)
   createResponse(res, result)
 })

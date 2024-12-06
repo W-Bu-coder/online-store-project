@@ -86,8 +86,8 @@ class UserService {
         code: 404001,
         role: -1
       }
-    console.log(password)
-    console.log(result.password)
+    // console.log(password)
+    // console.log(result.password)
     const compareResult = await bcrypt.compare(password, result.password);
     console.log(compareResult)
     // const compareResult = (password === result.password)
