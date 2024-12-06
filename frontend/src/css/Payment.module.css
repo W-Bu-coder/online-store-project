@@ -21,6 +21,7 @@
     margin: 10px;
     height: 72vh;
     overflow-y: scroll;
+    overflow-x: hidden;
     width: 58vw;
     margin-left: 2vw;
     padding-left: 1vw;

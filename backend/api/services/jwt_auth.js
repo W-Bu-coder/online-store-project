@@ -53,29 +53,33 @@ const checkToken = (req, res, next) => {
 
 const checkRole = () => {
   return (req, res, next) => {
-    let payload = null
+    let payload = null;
     try {
       // get payload
+      const token = req.headers['authorization'];
       const base64Url = token.split('.')[1];
       const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-      payload = JSON.parse(window.atob(base64));
+
+      const jsonPayload = Buffer.from(base64, 'base64').toString('utf-8');
+      payload = JSON.parse(jsonPayload);
     } catch (error) {
       console.error('token error :', error);
-      return null;
+      return res.status(401).json({ message: 'Invalid request, please log in' });
     }
-    console.log('payload: ', payload)
-    if(payload === null)
-      return res.status(401).json({ message: 'Invalid request, please log in' })
-    else {
-      if(payload.role !== 1) {
+    console.log('payload: ', payload);
+    
+    if (payload === null) {
+      return res.status(401).json({ message: 'Invalid request, please log in' });
+    } else {
+      if (payload.role !== 1) {
         return res.status(403).json({
-          message: 'You have no authoration to visit this page'
-        })
+          message: 'You have no authorization to visit this page'
+        });
       }
     }
-    next()
-  }
-}
+    next();
+  };
+};
 
 module.exports = {
   signToken,

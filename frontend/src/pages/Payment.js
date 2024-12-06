@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import CartContext, { CartProvider } from './CartContext';
 import Header from './Header';
 import CartItem from './CartItem';
-import { Link } from 'react-router-dom';
 import styles from '../css/Payment.module.css';
 import Alert from './Alert';
 
@@ -89,7 +88,7 @@ export default function Review() {
             {/* should have a component of items */}
 
             {/* shoule be CartItems---same as what in other places */}
-            {cartItems == null ? (
+            {cartItems.length < 1 ? (
               <p>Your cart is empty</p>
             ) : (
               cartItems.map(item => (

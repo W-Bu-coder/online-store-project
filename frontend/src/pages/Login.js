@@ -47,9 +47,11 @@ export default function Login() {
         localStorage.setItem('token', data.data.token);
         console.log(userName);
         if (data.data.role == 0) {
+          console.log('user login')
           navigate('/', { replace: true });
         }
         else if (data.data.role == 1) {
+          console.log('admin login')
           navigate('/dashboard', { replace: true });
         }
       }

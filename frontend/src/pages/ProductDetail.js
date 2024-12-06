@@ -135,7 +135,7 @@ export default function ProductDetail() {
           <h2>Price: <span className={styles.price} data-value="449.99">${productDetail.price}</span></h2>
           <div className={styles.rate}>
             {/* UI API of star */}
-            <Rating name="half-rating-read" className="custom-rating" defaultValue={productDetail.rate} precision={0.5} readOnly sx=
+            <Rating name="half-rating-read" className="custom-rating" defaultValue={Number(productDetail.rate)} precision={0.5} readOnly sx=
               {{
                 '& .MuiRating-decimal': {
                   display: 'inline-flex',

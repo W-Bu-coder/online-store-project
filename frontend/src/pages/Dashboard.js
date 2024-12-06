@@ -21,7 +21,12 @@ export default function Dashboard() {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await fetch('http://10.147.19.129:3036/api/user/list');
+        const response = await fetch('http://10.147.19.129:3036/api/user/list', {
+          withCredentials: true,
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
+        });
         if (!response.ok) {
           if (response.status === 403) {
             localStorage.removeItem('username');
