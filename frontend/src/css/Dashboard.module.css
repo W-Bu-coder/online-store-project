@@ -6,6 +6,20 @@
     height: 100vh;
     grid-column-gap: 1vw;
 }
+
+@media (max-width: 1024px) {
+  .dashboard{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+    align-items: center;
+  }
+  .LeftNav{
+    width: 80%;
+}
+}
+
 /* left part */
 .LeftNav{
     background-color: #185da2;
@@ -53,7 +67,7 @@
     background-color: #185da2;
     height: 100vh;
     padding-left: 0.5vw;
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 .Right h2{
     color: white;

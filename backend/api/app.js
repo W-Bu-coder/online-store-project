@@ -75,7 +75,7 @@ app.post('/api/login', async (req, res) => {
   if (status == 'success') {
     let token = signToken(req.body.username, role)
     const data = {
-      token: 'Bearer ' + token,
+      token: token,
       role: role
     }
     createResponse(res, data)
@@ -150,6 +150,10 @@ app.get('/api/order/details', async (req, res) => {
   let result = await OrderService.getOrderInfo(orderId)
   createResponse(res, result.data, result.code, result.message)
 })
+// app.post('/api/role', async (req, res) => {
+//   let result = await UserService.checkRole(req.body.token)
+//   createResponse(res, result.data, result.code, result.message)
+// })
 // admin: get user list
 app.get('/api/user/list', checkRole(), async (req, res) => {
   let result = await UserService.getUserList()

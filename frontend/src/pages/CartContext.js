@@ -11,12 +11,11 @@ export const CartProvider = ({ children }) => {
   // console.log(username);
   useEffect(() => {
     const fetchCartData = async () => {
-      if (!username) {
+      if (username == null) {
         return;
       }
       try {
         const username = localStorage.getItem('username');
-        // console.log(localStorage.getItem('token'))
         const response = await fetch(`http://10.147.19.129:3036/api/cart/list?username=${username}`, {
           withCredentials: true,
           headers: {
@@ -33,6 +32,7 @@ export const CartProvider = ({ children }) => {
         } else {
           console.error('Failed to fetch cart data');
         }
+
       } catch (error) {
         console.log(error)
       }

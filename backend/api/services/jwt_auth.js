@@ -35,9 +35,10 @@ const signToken = (username, role) => {
 // }
 
 const checkToken = (req, res, next) => {
-  const authHeader = req.headers['Authorization']
-  console.log('authHeader',authHeader)
+  // console.log(req.headers)
+  const authHeader = req.headers['authorization']
   const token = authHeader && authHeader.split(' ')[1] // Bearer TOKEN
+  console.log(token)
   if (!token) {
     return res.status(403).json({ message: 'Invalid request, please log in' })
   }
@@ -52,14 +53,25 @@ const checkToken = (req, res, next) => {
 
 const checkRole = () => {
   return (req, res, next) => {
-    if (!req.user) {
-      return res.status(401).json({ message: 'Invalid request, please log in' })
+    let payload = null
+    try {
+      // get payload
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      payload = JSON.parse(window.atob(base64));
+    } catch (error) {
+      console.error('token error :', error);
+      return null;
     }
-
-    if (req.user.role !== 1) {
-      return res.status(403).json({
-        message: 'You have no authoration to visit this page'
-      })
+    console.log('payload: ', payload)
+    if(payload === null)
+      return res.status(401).json({ message: 'Invalid request, please log in' })
+    else {
+      if(payload.role !== 1) {
+        return res.status(403).json({
+          message: 'You have no authoration to visit this page'
+        })
+      }
     }
     next()
   }

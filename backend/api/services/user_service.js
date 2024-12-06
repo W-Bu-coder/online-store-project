@@ -76,6 +76,10 @@ class UserService {
 
   }
 
+  // static async checkRole(token) {
+
+  // }
+
   static async handleLogin(username, password) {
     const result = await db.queryUserInfo(username);
     // not exist
