@@ -61,6 +61,7 @@ export default function ProductCard({ product }) {
     try {
       const response = await fetch('http://10.147.19.129:3036/api/cart/list', {
         method: 'PUT',
+        withCredentials: true,
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -70,6 +71,12 @@ export default function ProductCard({ product }) {
 
       if (!response.ok) {
         console.error(`Update failed`);
+        if (response.status === 403) {
+          localStorage.removeItem('username');
+          localStorage.removeItem('token');
+          navigate('/login', { replace: true });
+          return;
+        }
       } else {
         console.log(`success: `);
         setItemID(itemID);

@@ -31,6 +31,7 @@ export default function ProductManage() {
       const response = await fetch(`http://10.147.19.129:3036/api/item/stock?itemId=${productDetail.itemId}&qty=${stock}`,
         {
           method: 'PUT',
+          withCredentials: true,
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -119,6 +120,7 @@ export default function ProductManage() {
       try {
         setLoading(true);
         const response = await fetch(`http://10.147.19.129:3036/api/item/details?itemId=${currentItemID}`, {
+          withCredentials: true,
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
           }

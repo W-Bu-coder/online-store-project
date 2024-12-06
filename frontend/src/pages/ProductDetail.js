@@ -72,13 +72,14 @@ export default function ProductDetail() {
       try {
         setLoading(true);
         const response = await fetch(`http://10.147.19.129:3036/api/item/details?itemId=${currentItemID}`, {
+          withCredentials: true,
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
           }
         });
 
         if (!response.ok) {
-          throw new Error('Failed to fetch product details');
+          console.log('Failed to fetch product details');
         }
 
         const detail = await response.json();

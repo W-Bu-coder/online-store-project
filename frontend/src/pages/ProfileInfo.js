@@ -28,6 +28,7 @@ export default function ProfileInfo() {
       try {
         setLoading(true);
         const response = await fetch(`http://10.147.19.129:3036/api/user/info?username=${userName}`, {
+          withCredentials: true,
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
           }
@@ -76,6 +77,7 @@ export default function ProfileInfo() {
     try {
       const response = await fetch('http://10.147.19.129:3036/api/user/info', {
         method: 'POST',
+        withCredentials: true,
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token')}`

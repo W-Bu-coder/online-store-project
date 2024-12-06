@@ -13,6 +13,7 @@ export default function () {
       setLoading(true);
       try {
         const response = await fetch(`http://10.147.19.129:3036/api/order/list?username=${localStorage.getItem('username')}`, {
+          withCredentials: true,
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
           }

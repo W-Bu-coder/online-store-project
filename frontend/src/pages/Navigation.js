@@ -126,7 +126,7 @@ export default function Navigation({
         </ul>
       </div>
 
-      <div className={styles.menu}>
+      <div className={styles.menu} >
         <button className={styles.menuTitle}>Price
           <img src={downImage} alt="down" />
         </button>

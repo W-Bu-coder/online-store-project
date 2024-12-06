@@ -18,6 +18,7 @@ export default function UserManage() {
   const fetchUsers = async () => {
     try {
       const response = await fetch('http://10.147.19.129:3036/user/list', {
+        withCredentials: true,
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
